@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+  release:
+    types:
+      - published
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish
+        shell: pwsh
+        run: ./tools/Publish-Module.ps1
+        env:
+          REGISTRY_RW_PAT: ${{secrets.REGISTRY_RW_PAT}}
