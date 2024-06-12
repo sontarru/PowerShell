@@ -1,0 +1,106 @@
+{
+  "b": {
+    "name": "Bing",
+    "url": "https://www.bing.com/search?q={terms}"
+  },
+  "ms": {
+    "name": "MS Docs",
+    "url": "https://learn.microsoft.com/en-us/search/?terms={terms}"
+  },
+  "api": {
+    "name": ".NET API",
+    "url": "https://learn.microsoft.com/en-us/dotnet/api/?term={terms}"
+  },
+  "mdn": {
+    "name": "MDN",
+    "url": "https://developer.mozilla.org/en-US/search?q={terms}"
+  },
+  "gh": {
+    "name": "GitHub",
+    "url": "https://github.com/search?q={terms}"
+  },
+  "dh": {
+    "name": "dockerhub",
+    "url": "https://hub.docker.com/search?q={terms}"
+  },
+  "nuget": {
+    "name": "NuGet",
+    "url": "https://www.nuget.org/packages?q={terms}"
+  },
+  "pg": {
+    "name": "Postgres",
+    "url": "https://www.postgresql.org/search/?q={terms}"
+  },
+  "snap": {
+    "name": "Snapcraft",
+    "url": "https://snapcraft.io/search?q={terms}"
+  },
+  "vim": {
+    "name": "Vim Wiki",
+    "url": "https://vim.fandom.com/wiki/Special:Search?query={terms}"
+  },
+  "cald": {
+    "name": "CALD",
+    "url": "https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q={terms}"
+  },
+  "lingen": {
+    "name": "Lingvo EN -> RU",
+    "url": "https://www.lingvolive.com/en-us/translate/en-ru/{terms}"
+  },
+  "lingru": {
+    "name": "Lingvo RU -> EN",
+    "url": "https://www.lingvolive.com/en-us/translate/ru-en/{terms}"
+  },
+  "wb": {
+    "name": "Wildberries",
+    "url": "https://www.wildberries.ru/catalog/0/search.aspx?search={terms}"
+  },
+  "ozon": {
+    "name": "Ozon",
+    "url": "https://www.ozon.ru/search/?text={terms}"
+  },
+  "kns": {
+    "name": "KNS",
+    "url": "https://www.kns.ru/search.aspx?s_word={terms}"
+  },
+  "wikien": {
+    "name": "Wikipedia (EN)",
+    "url": "https://en.wikipedia.org/w/index.php?search={terms}"
+  },
+  "wikiru": {
+    "name": "Wikipedia (RU)",
+    "url": "https://ru.wikipedia.org/w/index.php?search={terms}"
+  },
+  "wikihow": {
+    "name": "WikiHow",
+    "url": "https://ru.wikihow.com/wikiHowTo?search={terms}"
+  },
+  "yt": {
+    "name": "Youtube",
+    "url": "https://www.youtube.com/results?search_query={terms}"
+  },
+  "rt": {
+    "name": "RuTube",
+    "url": "https://rutube.ru/search/?query={terms}"
+  },
+  "imdb": {
+    "name": "IMDB",
+    "url": "https://www.imdb.com/find/?q={terms}"
+  },
+  "lost": {
+    "name": "LostFilm",
+    "url": "https://www.lostfilm.today/search/?q={terms}"
+  },
+  "rutr": {
+    "name": "Rutracker",
+    "url": "https://rutracker.org/forum/tracker.php?nm={terms}"
+  },
+  "eda": {
+    "name": "EdaTV",
+    "url": "https://www.tveda.ru/search/?q={terms}"
+  },
+  "2gis": {
+    "name": "2GIS",
+    "url": "https://2gis.ru/rostov-on-don/search/{terms}"
+  }
+}
