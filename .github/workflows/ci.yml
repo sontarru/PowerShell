@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+  release:
+    types:
+      - published
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PowerShell
+        shell: pwsh
+        run: |
+          Register-PSResourceRepository GitHub `
+            -Uri "https://nuget.pkg.github.com/$env:GITHUB_REPOSITORY_OWNER/index.json"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish
+        shell: pwsh
+        run: |
+          Import-Module ./Dev.psm1
+          Publish-DevModule FkThat.PowerShell.* -UserName $env:GITHUB_REPOSITORY_OWNER `
+            -ApiKey $env:API_KEY
+        env:
+          API_KEY: ${{secrets.REGISTRY_RW_PAT}}
