@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
-Import-Module `
-    'FkThat.PowerShell.PSReadLine',
-    'FkThat.PowerShell.Prompt'
+if(Get-Command git -ErrorAction SilentlyContinue) {
+    Import-Module Posh-Git -ErrorAction Continue
+}
+
+Import-Module FkThat.PowerShell.Profile

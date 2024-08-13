@@ -145,20 +145,12 @@ function Publish-DevModule {
                 Select-Object -ExpandProperty Name
         })]
         [string[]]
-        $Name,
-
-        [Parameter(Mandatory)]
-        [string]
-        $UserName,
-
-        [Parameter(Mandatory)]
-        [string]
-        $ApiKey
+        $Name
     )
 
     begin {
-        $password = ConvertTo-SecureString $ApiKey -AsPlainText -Force
-        $credential = [pscredential]::new($UserName, $password)
+        $password = ConvertTo-SecureString $env:REGISTRY_RW_PAT -AsPlainText -Force
+        $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
     }
 
     process {

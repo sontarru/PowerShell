@@ -1,16 +1,15 @@
 @{
-RootModule = 'FkThat.PowerShell.Prompt.psm1'
-ModuleVersion = '1.0.0'
-GUID = '23ca816f-7bfc-4e0f-a278-f62389534652'
+ModuleVersion = '1.0.1'
+GUID = '6edd1a8c-65fc-4acc-b9fe-6cfb61c9f87d'
 Author = 'fkthat'
 CompanyName = 'fkthat.net'
 Copyright = '(c) fkthat.net, 2024'
-Description = 'The FkThat.PowerShell.Prompt module.'
-NestedModules = @()
+Description = 'The FkThat.PowerShell.Profile module.'
+NestedModules = 'PSReadLine.psm1', 'Prompt.psm1', 'GH.psm1'
 FunctionsToExport = 'Prompt'
 CmdletsToExport = @()
 VariablesToExport = @()
-AliasesToExport = @()
+AliasesToExport = 'gh'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable

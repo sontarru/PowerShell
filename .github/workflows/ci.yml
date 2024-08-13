@@ -25,7 +25,6 @@ jobs:
         shell: pwsh
         run: |
           Import-Module ./Dev.psm1
-          Publish-DevModule FkThat.PowerShell.* -UserName $env:GITHUB_REPOSITORY_OWNER `
-            -ApiKey $env:API_KEY
+          Publish-DevModule FkThat.PowerShell.*
         env:
-          API_KEY: ${{secrets.REGISTRY_RW_PAT}}
+          REGISTRY_RW_PAT: ${{secrets.REGISTRY_RW_PAT}}
