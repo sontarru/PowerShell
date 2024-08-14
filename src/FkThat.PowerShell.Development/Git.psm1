@@ -1,8 +1,11 @@
 $ErrorActionPreference = 'Stop'
 
-$git = Get-ApplicationPath git
+$git = switch ($PSVersionTable.Platform) {
+    Win32NT { "$env:ProgramFiles\Git\bin\git.exe" }
+    Unix { which git }
+}
 
-if(-not $git) {
+if(-not $git -or -not (Test-Path $git)) {
     return
 }
 
