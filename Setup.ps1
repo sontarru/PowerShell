@@ -7,7 +7,7 @@ Install-PSResource `
     -Reinstall
 
 Set-PSResourceRepository GitHub `
-    -Uri "https://nuget.pkg.github.com/fkthat/index.json" `
+    -Uri "https://nuget.pkg.github.com/$env:GITHUB_REPOSITORY_OWNER/index.json" `
     -Trusted
 
 if(-not $env:REGISTRY_RO_PAT) {
@@ -17,12 +17,14 @@ if(-not $env:REGISTRY_RO_PAT) {
 $password = ConvertTo-SecureString $env:REGISTRY_RO_PAT -AsPlainText -Force
 $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
 
-Install-PSResource `
-    "FkThat.PowerShell.Core",
-    "FkThat.PowerShell.Profile",
-    "FkThat.PowerShell.Development" `
-    -Repository GitHub `
-    -Credential $credential `
-    -Reinstall
+$psres = 'FkThat.PowerShell.Core',
+    'FkThat.PowerShell.Profile',
+    'FkThat.PowerShell.Development'
+
+if($IsWindows) {
+    $psres += 'FkThat.PowerShell.Alias'
+}
+
+Install-PSResource $psres -Repository GitHub -Credential $credential -Reinstall
 
 Copy-Item (Join-Path $PSScriptRoot "Profile.ps1") $PROFILE

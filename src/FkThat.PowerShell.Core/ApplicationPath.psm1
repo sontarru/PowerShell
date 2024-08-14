@@ -17,6 +17,10 @@ $apps = @{
         Win32NT = { "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe" }
         Unix = { $null }
     }
+    dotnet = @{
+        Win32NT = { "$env:ProgramFiles\dotnet\dotnet.exe" }
+        Unix = { which dotnet }
+    }
 }
 
 function Get-ApplicationPath {

@@ -22,3 +22,4 @@ $aliases.Keys | ForEach-Object {
         Set-Alias $_ $aliases[$_]
     }
 }
+
