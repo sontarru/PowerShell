@@ -23,4 +23,4 @@ if($IsWindows) {
 Install-PSResource $psres -Repository GitHub `
     -Credential $credential -Reinstall
 
-Copy-Item (Join-Path $PSScriptRoot "Profile.ps1") $PROFILE
+# Copy-Item (Join-Path $PSScriptRoot "Profile.ps1") $PROFILE
