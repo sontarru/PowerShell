@@ -1,14 +1,13 @@
 $ErrorActionPreference = 'Stop'
 
-if($IsWindows) {
-    $gh = "$env:ProgramFiles\GitHub CLI\gh.exe"
-    if(Test-Path $gh) { Set-Alias gh $gh }
-}
+$gh = Get-ApplicationPath 'gh'
 
-if(-not $gh -or -not (Test-Path $gh)) {
+if(-not $gh) {
     return
 }
 
-if(Get-Command gh -ErrorAction SilentlyContinue) {
-    gh completion -s powershell | Out-String | Invoke-Expression
+& $gh completion -s powershell | Out-String | Invoke-Expression
+
+if($IsWindows) {
+    Set-Alias gh $gh
 }

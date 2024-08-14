@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 function New-DevModule {
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string[]]

@@ -1,12 +1,8 @@
 $ErrorActionPreference = 'Stop'
 
-if(-not $IsWindows) {
-    return
-}
+$winget = Get-ApplicationPath winget
 
-$winget = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
-
-if(-not (Test-Path $winget)) {
+if(-not $winget) {
     return
 }
 
@@ -18,4 +14,6 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     }
 }
 
-Set-Alias winget $winget
+if($IsWindows) {
+    Set-Alias winget $winget
+}

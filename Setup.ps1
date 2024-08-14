@@ -18,8 +18,9 @@ $password = ConvertTo-SecureString $env:REGISTRY_RO_PAT -AsPlainText -Force
 $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
 
 Install-PSResource `
+    "FkThat.PowerShell.Core",
     "FkThat.PowerShell.Profile",
-    "FkThat.PowerShell.Utility" `
+    "FkThat.PowerShell.Development" `
     -Repository GitHub `
     -Credential $credential `
     -Reinstall
