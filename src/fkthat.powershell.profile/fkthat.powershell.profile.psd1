@@ -1,5 +1,5 @@
 @{
-ModuleVersion = '2.2.0'
+ModuleVersion = '2.2.1'
 GUID = '6edd1a8c-65fc-4acc-b9fe-6cfb61c9f87d'
 Author = 'fkthat'
 CompanyName = 'fkthat.net'
