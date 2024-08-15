@@ -1,6 +1,6 @@
 @{
 RootModule = 'FkThat.PowerShell.Alias.psm1'
-ModuleVersion = '2.2.0'
+ModuleVersion = '2.2.1'
 GUID = '7dfdc45b-2b81-4285-8077-ae0cf703f5df'
 Author = 'fkthat'
 CompanyName = 'fkthat.net'
