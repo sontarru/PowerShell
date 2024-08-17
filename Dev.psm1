@@ -103,6 +103,11 @@ function Compare-Version {
     }
 }
 
+function Register-GitHubResourceRepository {
+    Register-PSResourceRepository GitHub `
+        -Uri "https://nuget.pkg.github.com/$env:GITHUB_REPOSITORY_OWNER/index.json"
+}
+
 function Publish-DevModule {
     [CmdletBinding()]
     param (
