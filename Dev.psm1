@@ -93,43 +93,12 @@ function Compare-Version {
     )
 
     begin {
-        $right = ($CompareTo -split "\.") | ForEach-Object { [int]$_ }
+        $right =  [System.Version]::new($CompareTo)
     }
 
     process {
         $Version | ForEach-Object {
-            $left = ($_ -split "\.") | ForEach-Object { [int]$_ }
-
-            $i = 0
-
-            while($true) {
-                if($i -eq $left.Length -and $i -eq $right.Length) {
-                    Write-Output 0
-                    break
-                }
-
-                if($i -eq $left.Length) {
-                    Write-Output -1
-                    break
-                }
-
-                if($i -eq $right.Length) {
-                    Write-Output 1
-                    break
-                }
-
-                if($left[$i] -lt $right[$i]) {
-                    Write-Output -1
-                    break
-                }
-
-                if($left[$i] -gt $right[$i]) {
-                    Write-Output 1
-                    break
-                }
-
-                $i++
-            }
+            Write-Output [System.Version]::new($_).CompareTo($right)
         }
     }
 }
@@ -149,7 +118,7 @@ function Publish-DevModule {
     )
 
     begin {
-        $password = ConvertTo-SecureString $env:REGISTRY_RW_PAT -AsPlainText -Force
+        $password = ConvertTo-SecureString $env:GITHUB_TOKEN -AsPlainText -Force
         $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
     }
 
@@ -169,6 +138,7 @@ function Publish-DevModule {
                     $currentModVersion = Find-PSResource $modName -Repository GitHub `
                         -Credential $credential -ErrorAction SilentlyContinue |
                         Select-Object -ExpandProperty Version
+
 
                     if(-not $currentModVersion -or (Compare-Version $modVersion $currentModVersion) -gt 0) {
                         Publish-PSResource -Path $modPath -Repository GitHub -Credential $credential

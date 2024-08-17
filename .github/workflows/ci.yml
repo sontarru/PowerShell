@@ -3,9 +3,9 @@ name: CI
 on:
   workflow_dispatch:
 
-  release:
-    types:
-      - published
+# release:
+#   types:
+#     - published
 
 jobs:
   ci:
@@ -26,5 +26,3 @@ jobs:
         run: |
           Import-Module ./Dev.psm1
           Publish-DevModule FkThat.PowerShell.*
-        env:
-          REGISTRY_RW_PAT: ${{secrets.REGISTRY_RW_PAT}}
