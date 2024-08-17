@@ -25,4 +25,4 @@ jobs:
         shell: pwsh
         run: |
           Import-Module ./Dev.psm1
-          Publish-DevModule FkThat.PowerShell.*
+          Publish-DevModule *
