@@ -98,7 +98,7 @@ function Compare-Version {
 
     process {
         $Version | ForEach-Object {
-            Write-Output [System.Version]::new($_).CompareTo($right)
+            Write-Output ([System.Version]::new($_)).CompareTo($right)
         }
     }
 }
