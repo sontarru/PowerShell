@@ -13,15 +13,15 @@ Set-PSResourceRepository GitHub `
 $password = ConvertTo-SecureString $env:REGISTRY_RO_PAT -AsPlainText -Force
 $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
 
-$ns = 'FkThat.PowerShell'
-$modules = "$ns.Profile", "$ns.Development"
+$ns = 'fkthat.powershell'
+$modules = "$ns.profile", "$ns.development", "$ns.utility"
 
 if($IsWindows) {
-    $modules += "$ns.Alias"
+    $modules += "$ns.alias"
 }
 
 Install-PSResource $modules -Repository GitHub -Credential $credential -Reinstall
 
 '$ErrorActionPreference = "Stop"',
-'Import-Module FkThat.PowerShell.Profile' |
+'Import-Module fkthat.powershell.profile' |
     Set-Content $PROFILE
