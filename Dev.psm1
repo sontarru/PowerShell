@@ -111,7 +111,7 @@ function Register-GitHubResourceRepository {
 function Publish-DevModule {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [SupportsWildcards()]
         [ArgumentCompleter({
             Join-Path $PSScriptRoot "src" |
@@ -119,7 +119,7 @@ function Publish-DevModule {
                 Select-Object -ExpandProperty Name
         })]
         [string[]]
-        $Name
+        $Name = '*'
     )
 
     begin {
