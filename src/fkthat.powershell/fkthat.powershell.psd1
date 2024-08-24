@@ -1,12 +1,12 @@
 @{
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.0.1'
 GUID = '6edd1a8c-65fc-4acc-b9fe-6cfb61c9f87d'
 Author = 'fkthat'
 CompanyName = 'fkthat.net'
 Copyright = '(c) fkthat.net, 2024'
-Description = 'The module to import from $PROFILE. ' +
-    'It provides tab completion for some often used application (git, winget, dotnet, gh)' +
-    'as well as various utility functions and aliases.'
+Description = 'Registers tab completion for git, winget, dotnet, gh. ' +
+    'Sets custom prompt and PSReadLine options. ' +
+    'Exports some utility functions.'
 RequiredModules = @()
 NestedModules = 'Aliases.psm1', 'Docker.psm1', 'DotNet.psm1', 'GH.psm1',
     'Git.psm1', 'Prompt.psm1', 'PSReadLine.psm1', 'WinGet.psm1', 'SystemTray.psm1',
