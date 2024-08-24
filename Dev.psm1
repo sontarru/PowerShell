@@ -1,5 +1,17 @@
 $ErrorActionPreference = 'Stop'
 
+function Get-DevModule {
+    Join-Path $PSScriptRoot 'src' |
+        Get-ChildItem -Recurse -Filter *.psd1 |
+        ForEach-Object {
+            $v = (Get-Content $_ -Raw | Invoke-Expression).ModuleVersion
+            [PSCustomObject]@{
+                Name = $_.BaseName
+                Version = [System.Version]::new($v)
+            }
+        }
+    }
+
 function New-DevModule {
     [CmdletBinding()]
     param (
@@ -11,21 +23,18 @@ function New-DevModule {
     process {
         $Name |
             ForEach-Object {
-                Join-Path $PSScriptRoot "src" $_
-            } |
-            ForEach-Object {
-                $moduleDir  = $_
+                $moduleName = $_
+                $moduleDir  = Join-Path $PSScriptRoot 'src' $moduleName
 
                 if(Test-Path $moduleDir) {
                     Write-Warning "$moduleDir already exists."
                     return
                 }
 
-                $moduleName = Split-Path $moduleDir -Leaf
                 $moduleManifestPath = Join-Path $moduleDir "$moduleName.psd1"
                 $modulePath = Join-Path $moduleDir "$moduleName.psm1"
 
-                New-Item $modulePath -Force
+                $null = New-Item $modulePath -Force
 
                 $null = New-ModuleManifest `
                     -Path $moduleManifestPath `
@@ -45,6 +54,8 @@ function New-DevModule {
                 (Get-Content $moduleManifestPath | ForEach-Object {
                     $_ -replace '^# VariablesToExport .*','VariablesToExport = @()'
                 }) | Set-Content $moduleManifestPath
+
+                Clear-DevModule $moduleName
             }
     }
 }
@@ -151,4 +162,27 @@ function Publish-DevModule {
                 }
             }
     }
+}
+
+function Set-DevPSModulePath {
+    $env:PSModulePath = "$(Join-Path $PSScriptRoot 'src');$env:PSModulePath"
+}
+
+function Measure-DevModule {
+    Join-Path $PSScriptRoot 'src' 'fkthat.powershell' |
+        Get-ChildItem -Filter *.psm1 |
+        ForEach-Object {
+            $path = $_.FullName
+            $name = $_.BaseName
+
+            $loadTime = Measure-Command { Import-Module $path } |
+                Select-Object -ExpandProperty TotalMilliseconds
+
+            Remove-Module $name
+
+            [PSCustomObject]@{
+                Name = $name
+                LoadTime = $loadTime
+            }
+        }
 }

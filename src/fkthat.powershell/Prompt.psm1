@@ -37,3 +37,4 @@ function Prompt {
             "${Blue}${Dir}" +
             "${White}`$ "
 }
+

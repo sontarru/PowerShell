@@ -5,15 +5,15 @@ function Compare-Content {
     param (
         [Parameter(Mandatory, Position = 0)]
         [string]
-        $Path1,
+        $ReferencePath,
 
         [Parameter(Mandatory, Position = 1)]
         [string]
-        $Path2
+        $DifferencePath
     )
 
-    $c1 = Get-Content $Path1
-    $c2 = Get-Content $Path2
+    $c1 = Get-Content -LiteralPath $ReferencePath
+    $c2 = Get-Content -LiteralPath $DifferencePath
     Compare-Object $c1 $c2
 }
 

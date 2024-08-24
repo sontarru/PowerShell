@@ -1,8 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-if (-not $IsWindows) {
-    return
-}
+if (-not $IsWindows) { return }
 
 function Reset-SystemTray {
     Stop-Process -Name 'explorer' -Force
