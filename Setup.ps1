@@ -1,10 +1,15 @@
-$ErrorActionPreference = 'Stop'
+[CmdletBinding()]
+param(
+    [Parameter(ParameterSetName = 'update')]
+    [switch]
+    $Update,
 
-Install-PSResource `
-    'Posh-Git',
-    'DockerCompletion' `
-    -Repository PSGallery `
-    -Reinstall
+    [Parameter(ParameterSetName = 'reinstall')]
+    [switch]
+    $Reinstall
+)
+
+$ErrorActionPreference = 'Stop'
 
 Set-PSResourceRepository GitHub `
     -Uri "https://nuget.pkg.github.com/$env:GITHUB_REPOSITORY_OWNER/index.json" `
@@ -13,7 +18,28 @@ Set-PSResourceRepository GitHub `
 $password = ConvertTo-SecureString $env:GITHUB_TOKEN -AsPlainText -Force
 $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
 
-Install-PSResource fkthat.powershell -Repository GitHub -Credential $credential -Reinstall
+if(-not $Update) {
+    Install-PSResource `
+        'Posh-Git',
+        'DockerCompletion' `
+        -Repository PSGallery `
+        -Reinstall:$Reinstall `
+        -WarningAction SilentlyContinue
+
+    Install-PSResource `
+        'fkthat.powershell' `
+        -Repository GitHub `
+        -Credential $credential `
+        -Reinstall:$Reinstall `
+        -WarningAction SilentlyContinue
+
+}
+else {
+    Get-InstalledPSResource | ForEach-Object {
+        Update-PSResource $_.Name -Repository $_.Repository `
+            -Credential $credential -WarningAction SilentlyContinue
+    }
+}
 
 Invoke-WebRequest `
     "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY_OWNER/PowerShell/develop/Profile.ps1" `
