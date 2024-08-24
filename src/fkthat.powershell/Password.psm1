@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 # $PasswordChars = "!#%+23456789:=?@ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 # $PasswordChars = "!#%+23456789:?@ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-$PasswordChars = @{
+$script:PasswordChars = @{
     UpperCase = 'ABCDEFGHJKLMNPRSTUVWXYZ'
     LowerCase = 'abcdefghijkmnopqrstuvwxyz'
     Digit = '23456789'
@@ -31,7 +31,7 @@ function Test-PasswordStrength {
         [Parameter()]
         [ValidateSet([CharKindValuesGenerator])]
         [string[]]
-        $Require = $CharKind.Keys
+        $Require = ($script:PasswordChars.Keys)
     )
 
     process {
@@ -44,7 +44,7 @@ function Test-PasswordStrength {
                 foreach ($r in $Require) {
                    $ok = $false
                    foreach($c in $_.ToCharArray()) {
-                     if($PasswordChars[$r].Contains($c)) {
+                     if($script:PasswordChars[$r].Contains($c)) {
                         $ok = $true
                         break;
                      }
@@ -61,7 +61,7 @@ function Test-PasswordStrength {
 
 function Get-RandomPassword {
     [CmdletBinding()]
-    [OutputType([SecureString])]
+    [OutputType([SecureString], [string])]
     param (
         [Parameter()]
         [ValidateRange(8, [int]::MaxValue)]
@@ -77,24 +77,28 @@ function Get-RandomPassword {
         [ValidateSet([CharKindValuesGenerator])]
         [string[]]
         # Character kinds to use.
-        $Require = $PasswordChars.Keys
+        $Require = $script:PasswordChars.Keys,
+
+        [switch]
+        $AsPlainText
     )
 
     $chars = ''
 
     $Require | ForEach-Object {
-        $chars += $PasswordChars[$_]
+        $chars += $script:PasswordChars[$_]
     }
 
     $c = $Count
     while($c-- -gt 0) {
         while($true) {
+
             $p = Get-Random -Minimum 0 -Maximum $chars.Length -Count $Length |
-                ForEach-Object { $chars[$_] } |
-                Join-String | ConvertTo-SecureString -AsPlainText -Force
+                ForEach-Object { $chars[$_] } | Join-String |
+                ConvertTo-SecureString -AsPlainText -Force
 
             if(Test-PasswordStrength $p -Length $Length -Require $Require) {
-                Write-Output $p
+                Write-Output ($AsPlainText ? (ConvertFrom-SecureString $p) : $p)
                 break
             }
         }
