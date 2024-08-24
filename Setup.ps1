@@ -17,4 +17,4 @@ Install-PSResource fkthat.powershell -Repository GitHub -Credential $credential 
 
 Invoke-WebRequest `
     "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY_OWNER/PowerShell/develop/Profile.ps1" `
-    -OutFile $PROFILE -Force
+    -OutFile $PROFILE
