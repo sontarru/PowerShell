@@ -1,10 +1,10 @@
 [CmdletBinding()]
 param(
-    [Parameter(ParameterSetName = 'update')]
+    [Parameter()]
     [switch]
     $Update,
 
-    [Parameter(ParameterSetName = 'reinstall')]
+    [Parameter()]
     [switch]
     $Reinstall
 )
