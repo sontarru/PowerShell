@@ -10,7 +10,7 @@ Description = 'Registers tab completion for git, winget, dotnet, gh. ' +
 RequiredModules = @()
 NestedModules = 'Aliases.psm1', 'Docker.psm1', 'DotNet.psm1', 'GH.psm1',
     'Git.psm1', 'Prompt.psm1', 'PSReadLine.psm1', 'WinGet.psm1', 'SystemTray.psm1',
-    'Content.psm1', 'Password.psm1', 'Process.psm1', 'Path.psm1'
+    'Content.psm1', 'Password.psm1', 'Process.psm1', 'Path.psm1', 'CodeCoverage.psm1'
 FunctionsToExport = 'Prompt', 'Start-GitFlow', 'Clear-GitRepo', 'Reset-SystemTray',
     'Compare-Content', 'Update-Content', 'Update-ContentEol', 'Update-ContentEolToDos',
     'Update-ContentEolToUnix','Get-RandomPassword', 'Test-PasswordStrength',
