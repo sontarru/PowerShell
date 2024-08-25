@@ -186,3 +186,60 @@ function Measure-DevModule {
             }
         }
 }
+
+function Update-DevModule {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [SupportsWildcards()]
+        [string[]]
+        $Name = '*',
+
+        [Parameter()]
+        [Version]
+        $Version
+    )
+
+    begin {
+        $psds = Join-Path $PSScriptRoot 'src' |
+            Get-ChildItem -Directory |
+            Get-ChildItem -File -Filter *.psd1 |
+            Where-Object { $_.BaseName -eq $_.Directory.Name }
+    }
+
+    process {
+        $Name | ForEach-Object {
+            $filter = $_
+            $psds = $psds | Where-Object { $_.BaseName -like $filter }
+        }
+    }
+
+    end {
+        $psds | ForEach-Object {
+            $psd = $_
+            $rootModule = $psd.FullName -replace '\.psd1$','.psm1'
+            $rootModule = (Test-Path $rootModule) ? $rootModule : $null
+            $nestedModules = Get-ChildItem $psd.Directory -Recurse -File -Filter *.psm1
+
+            $functions = @{}
+            $aliases = @{}
+
+            $nestedModules | ForEach-Object {
+                pwsh { Import-Module $args[0] -PassThru } -args $_ |
+                    ForEach-Object {
+                        $_.ExportedFunctions.Keys | ForEach-Object { $functions[$_] = $true }
+                        $_.ExportedAliases.Keys | ForEach-Object { $aliases[$_] = $true }
+                    }
+            }
+
+            $functions = $functions.Keys |
+                Where-Object { Get-Verb ($_ -replace '-.*','') } |
+                Sort-Object { $_ -replace '^[^-]*-','' }
+
+            $aliases = $aliases.Keys
+
+            Write-Output $functions
+            # Write-Output $aliases
+        }
+    }
+}
