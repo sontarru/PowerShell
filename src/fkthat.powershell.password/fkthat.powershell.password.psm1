@@ -98,7 +98,7 @@ function Get-RandomPassword {
                 ConvertTo-SecureString -AsPlainText -Force
 
             if(Test-PasswordStrength $p -Length $Length -Require $Require) {
-                Write-Output ($AsPlainText ? (ConvertFrom-SecureString $p) : $p)
+                Write-Output ($AsPlainText ? (ConvertFrom-SecureString $p -AsPlainText) : $p)
                 break
             }
         }
