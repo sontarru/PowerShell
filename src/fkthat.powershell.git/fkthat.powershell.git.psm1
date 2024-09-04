@@ -1,6 +1,8 @@
 $ErrorActionPreference = 'Stop'
 
-if(-not (Get-Command git -ErrorAction SilentlyContinue)) {
+$git = $IsWindows ? "$env:ProgramFiles\Git\bin\git.exe" : (which git)
+
+if(-not (Test-Path $git -ErrorAction SilentlyContinue)) {
     return
 }
 
@@ -19,13 +21,13 @@ function Start-GitFlow {
     )
 
     if(-not $Base) {
-        $Base = (git branch --show-current)
+        $Base = (& $git branch --show-current)
     }
 
-    git checkout $Base -b $Name &&
-        git fetch origin "${Base}:${Base}" &&
-        git rebase $Base &&
-        git push -u origin $Name
+    & $git checkout $Base -b $Name &&
+        & $git fetch origin "${Base}:${Base}" &&
+        & $git rebase $Base &&
+        & $git push -u origin $Name
 }
 
 function Clear-GitRepo {
@@ -37,7 +39,7 @@ function Clear-GitRepo {
     )
 
     $x = $Untracked ? "-x" : "-X"
-    git clean -df $x -e '!.vs' -e '!*.suo' -e '!.vscode/*'
+    & $git clean -df $x -e '!.vs' -e '!*.suo' -e '!.vscode/*'
 }
 
 #
