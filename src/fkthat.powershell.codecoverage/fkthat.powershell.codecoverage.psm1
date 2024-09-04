@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 
-if(-not (Get-Command reportgenerator -ErrorAction SilentlyContinue)) {
+$rgen = $IsWindows ? "$env:USERPROFILE\.dotnet\tools\reportgenerator.exe" : (which reportgenerator)
+
+if(-not (Test-Path $rgen)) {
     return
 }
 

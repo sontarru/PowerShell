@@ -54,13 +54,11 @@ function New-DevModule {
                 (Get-Content $moduleManifestPath | ForEach-Object {
                     $_ -replace '^# VariablesToExport .*','VariablesToExport = @()'
                 }) | Set-Content $moduleManifestPath
-
-                Clear-DevModule $moduleName
             }
     }
 }
 
-function Clear-DevModule {
+function Clear-DevModuleComments {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -240,6 +238,59 @@ function Update-DevModule {
 
             Write-Output $functions
             # Write-Output $aliases
+        }
+    }
+}
+
+
+function Move-DevModule {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [SupportsWildcards()]
+        [string]
+        $Name
+    )
+
+    begin {
+        $modules = Join-Path $PSScriptRoot "src" "fkthat.powershell" |
+            Get-ChildItem -File -Filter *.psm1
+    }
+
+    process {
+        $Name | ForEach-Object {
+            $wildCard = $_
+            $modules = $modules | Where-Object {
+                $_.BaseName -like $wildCard
+            }
+        }
+    }
+
+    end {
+        $modules | ForEach-Object {
+            $module = $_
+            $newModuleName = "fkthat.powershell.$($module.BaseName.ToLower())"
+            $newModuleDir = Join-Path $PSScriptRoot 'src' $newModuleName
+
+            if(Test-Path $newModuleDir) {
+                Write-Warning "$newModuleDir already exists. Skipped."
+                return
+            }
+
+            $newModulePsd = Join-Path $newModuleDir "$newModuleName.psd1"
+            $newModulePsm = Join-Path $newModuleDir "$newModuleName.psm1"
+            New-Item $newModuleDir -ItemType Directory
+            Copy-Item $module $newModulePsm
+            $manifest = pwsh { Import-Module $args[0] -Force -PassThru } -args $module
+
+            New-ModuleManifest $newModulePsd  `
+                -RootModule "$newModuleName.psm1" `
+                -FunctionsToExport ([string[]]$manifest.ExportedFunctions.Keys) `
+                -AliasesToExport ([string[]]$manifest.ExportedAliases.Keys) `
+                -VariablesToExport ([string[]]$manifest.ExportedVariables.Keys) `
+                -CmdletsToExport ([string[]]$manifest.ExportedCmdLets.Keys) `
+                -Description "The FkThat's $($module.BaseName) module." `
+                -Company 'fkthat.net'
         }
     }
 }

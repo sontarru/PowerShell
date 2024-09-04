@@ -4,6 +4,9 @@ $White = "`e[37m";
 $Green = "`e[32m";
 $Blue = "`e[34m";
 $Red = "`e[31m";
+
+$BlinkingBar = "`e[5 q"
+
 $User = [System.Environment]::UserName
 $Machine = [System.Environment]::MachineName
 
@@ -29,12 +32,14 @@ function Prompt {
             "${Red}${User}@${Machine}" +
             "${Red}:" +
             "${Red}${Dir}" +
-            "${White}`# " `
+            "${White}`# " +
+            "${BlinkingBar}"
             :
             "${White}PS " +
             "${Green}${User}@${Machine}" +
             "${White}:" +
             "${Blue}${Dir}" +
-            "${White}`$ "
+            "${White}`$ " +
+            "${BlinkingBar}"
 }
 

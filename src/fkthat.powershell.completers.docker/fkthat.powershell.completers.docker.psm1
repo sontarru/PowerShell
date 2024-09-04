@@ -1,8 +1,10 @@
 $ErrorActionPreference = 'Stop'
 
+$docker = $IsWindows ? "$env:ProgramFiles\Docker\Docker\resources\bin\docker.exe" : (which docker)
+
 $script:CompleterRegistered = $false
 
-if(Get-Command docker -ErrorAction SilentlyContinue) {
+if(Test-Path $docker -ErrorAction SilentlyContinue) {
     Register-ArgumentCompleter -Native -CommandName docker -ScriptBlock {
         if(-not $script:CompleterRegistered) {
             Import-Module DockerCompletion

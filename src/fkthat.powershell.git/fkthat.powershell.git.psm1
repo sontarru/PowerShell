@@ -4,23 +4,6 @@ if(-not (Get-Command git -ErrorAction SilentlyContinue)) {
     return
 }
 
-#
-# Git argument completion
-#
-
-$script:CompleterRegistered = $false
-
-Register-ArgumentCompleter -Native -CommandName git -ScriptBlock {
-    if(-not $script:CompleterRegistered) {
-        Import-Module posh-git
-        $script:CompleterRegistered = $true
-    }
-}
-
-#
-# Git utilities
-#
-
 function Start-GitFlow {
     [CmdletBinding()]
     param (

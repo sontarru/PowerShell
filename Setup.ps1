@@ -1,14 +1,3 @@
-[CmdletBinding()]
-param(
-    [Parameter()]
-    [switch]
-    $Update,
-
-    [Parameter()]
-    [switch]
-    $Reinstall
-)
-
 $ErrorActionPreference = 'Stop'
 
 Set-PSResourceRepository GitHub `
@@ -18,28 +7,30 @@ Set-PSResourceRepository GitHub `
 $password = ConvertTo-SecureString $env:GITHUB_TOKEN -AsPlainText -Force
 $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
 
-if(-not $Update) {
-    Install-PSResource `
-        'Posh-Git',
-        'DockerCompletion' `
-        -Repository PSGallery `
-        -Reinstall:$Reinstall `
-        -WarningAction SilentlyContinue
+Install-PSResource `
+    'Posh-Git',
+    'DockerCompletion' `
+    -Repository PSGallery `
+    -WarningAction SilentlyContinue
 
-    Install-PSResource `
-        'fkthat.powershell' `
-        -Repository GitHub `
-        -Credential $credential `
-        -Reinstall:$Reinstall `
-        -WarningAction SilentlyContinue
-
-}
-else {
-    Get-InstalledPSResource | ForEach-Object {
-        Update-PSResource $_.Name -Repository $_.Repository `
-            -Credential $credential -WarningAction SilentlyContinue
-    }
-}
+'fkthat.powershell',
+'fkthat.powershell.aliases',
+'fkthat.powershell.codecoverage',
+'fkthat.powershell.completers.docker',
+'fkthat.powershell.completers.dotnet',
+'fkthat.powershell.completers.gh',
+'fkthat.powershell.completers.git',
+'fkthat.powershell.completers.winget',
+'fkthat.powershell.content',
+'fkthat.powershell.git',
+'fkthat.powershell.password',
+'fkthat.powershell.path',
+'fkthat.powershell.process',
+'fkthat.powershell.prompt',
+'fkthat.powershell.psreadline',
+'fkthat.powershell.systemtray' |
+Install-PSResource ` -Repository GitHub ` -Credential $credential `
+    -Reinstall -WarningAction SilentlyContinue
 
 Invoke-WebRequest `
     "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY_OWNER/PowerShell/develop/Profile.ps1" `
