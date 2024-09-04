@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $rgen = $IsWindows ? "$env:USERPROFILE\.dotnet\tools\reportgenerator.exe" : (which reportgenerator)
 
-if(-not (Test-Path $rgen)) {
+if(-not (Test-Path $rgen -ErrorAction SilentlyContinue)) {
     return
 }
 
@@ -19,13 +19,13 @@ function New-CodeCoverageReport {
         $OutDir = Join-Path $p::GetTempPath() $p::GetRandomFileName()
     }
 
-    $stderr = (reportgenerator -reports:**/coverage.* -targetdir:$OutDir -reporttypes:Html 2>&1)
+    $stderr = (& $rgen -reports:**/coverage.* -targetdir:$OutDir -reporttypes:Html 2>&1)
 
     if($?) {
         Join-Path $OutDir 'index.html'
     }
     else {
-        Write-Error $stderr
+        Write-Error ("", $stderr | Out-String)
     }
 }
 
