@@ -78,8 +78,8 @@ CmdletsToExport = @()
 # VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = '7z', 'tar', 'code', 'gh', 'node', 'ffmpeg', 'vbman', 'npm', 'ssh', 'scp', 'nvim', 
-               'sudo', 'vs', 'winget', 'less', 'nvm', 'gdiff'
+AliasesToExport = '7z', 'tar', 'code', 'gh', 'node', 'ffmpeg', 'vbman', 'npm', 'ssh', 'scp', 'nvim',
+               'sudo', 'vs', 'winget', 'less', 'nvm', 'gdiff', 'docker'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
