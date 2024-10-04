@@ -9,10 +9,10 @@ function New-DevModule {
     )
 
     $dir = Join-Path $PSScriptRoot 'src' $Name
-    New-Item -Path (Join-Path $dir "$($Name).psm1")
+    $null = New-Item -Path (Join-Path $dir "$($Name).psm1") -Force
 
     $null = New-ModuleManifest `
-        -Path (Join-Path $dir "$($Name).psd1")
+        -Path (Join-Path $dir "$($Name).psd1") `
         -RootModule "$Name.psm1" `
         -ModuleVersion "1.0.0" `
         -Description "The $Name module." `
