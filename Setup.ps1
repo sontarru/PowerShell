@@ -25,6 +25,7 @@ Install-PSResource `
 'fkthat.powershell.git',
 'fkthat.powershell.password',
 'fkthat.powershell.path',
+'fkthat.powershell.powerplan',
 'fkthat.powershell.process',
 'fkthat.powershell.prompt',
 'fkthat.powershell.psreadline',
