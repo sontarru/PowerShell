@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
+$ModulePrefix = 'fkthat.powershell'
+
 function New-DevModule {
     [CmdletBinding()]
     param (
@@ -27,35 +29,49 @@ function New-DevModule {
         -NestedModules @()
 }
 
-function Register-GitHubResourceRepository {
-    Register-PSResourceRepository GitHub `
-        -Uri "https://nuget.pkg.github.com/$env:GITHUB_REPOSITORY_OWNER/index.json"
+function Set-GitHubResourceRepository {
+    Set-PSResourceRepository GitHub `
+        -Uri "https://nuget.pkg.github.com/$env:GITHUB_REPOSITORY_OWNER/index.json" `
+        -Trusted
 }
 
-function Get-DevModule {
-    Join-Path $PSScriptRoot "src" |
-        Get-ChildItem -Directory |
-        Select-Object -ExpandProperty Name
-}
-
-function Get-PublishCredential {
-    $password = ConvertTo-SecureString $env:GITHUB_TOKEN -AsPlainText -Force
-    $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
-    return $credential
+function _Get_DevModuleNames {
+    Join-Path $PSScriptRoot 'src' |
+        Get-ChildItem -Directory -Filter "$ModulePrefix.*" |
+        Where { Join-Path $_ "$($_.Name).psd1" | Test-Path -PathType Leaf } |
+        Select-Object -ExpandProperty Name |
+        ForEach-Object { $_.Substring($ModulePrefix.Length +1) }
 }
 
 function Publish-DevModule {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, Position = 0)]
-        [string]
-        $Name,
-
-        [Parameter(Mandatory)]
-        [pscredential]
-        $Credential
+        [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [SupportsWildcards()]
+        [string[]]
+        $Name = '*'
     )
 
-    $modulePath = Join-Path $PSScriptRoot 'src' $Name
-    Publish-PSResource -Path $modulePath -Repository GitHub -Credential $Credential
+    begin {
+        $names = _Get_DevModuleNames
+    }
+
+    process {
+        $Name | ForEach-Object {
+            $n = $_
+            $names = $names | Where-Object { $_ -Like $n }
+        }
+    }
+
+    end {
+        Set-GitHubResourceRepository
+
+        $password = ConvertTo-SecureString $env:GITHUB_TOKEN -AsPlainText -Force
+        $credential = [pscredential]::new($env:GITHUB_REPOSITORY_OWNER, $password)
+
+        $names | ForEach-Object {
+            $p = Join-Path $PSScriptRoot 'src' "$ModulePrefix.$_"
+            Publish-PSResource -Path $p -Repository GitHub -Credential $credential
+        }
+    }
 }
