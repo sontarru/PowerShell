@@ -13,23 +13,9 @@ Install-PSResource `
     -Repository PSGallery `
     -WarningAction SilentlyContinue
 
-'fkthat.powershell',
-'fkthat.powershell.aliases',
-'fkthat.powershell.codecoverage',
-'fkthat.powershell.completers.docker',
-'fkthat.powershell.completers.dotnet',
-'fkthat.powershell.completers.gh',
-'fkthat.powershell.completers.git',
-'fkthat.powershell.completers.winget',
-'fkthat.powershell.content',
-'fkthat.powershell.git',
-'fkthat.powershell.password',
-'fkthat.powershell.path',
-'fkthat.powershell.powerplan',
-'fkthat.powershell.process',
-'fkthat.powershell.prompt',
-'fkthat.powershell.psreadline',
-'fkthat.powershell.systemtray' |
+'fkthat.powershell.profile',
+'fkthat.powershell.alias',
+'fkthat.powershell.utility' |
 Install-PSResource ` -Repository GitHub ` -Credential $credential `
     -Reinstall -WarningAction SilentlyContinue
 
