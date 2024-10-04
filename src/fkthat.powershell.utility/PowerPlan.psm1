@@ -4,7 +4,7 @@ if(-not $IsWindows) {
     return
 }
 
-function Get-PowerPlan {
+function _Get_PowerPlan {
     powercfg /l |
         Select-Object -Skip 2 |
         ForEach-Object {
@@ -18,9 +18,42 @@ function Get-PowerPlan {
         }
 }
 
+
+function Get-PowerPlan {
+    param (
+        [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [SupportsWildcards()]
+        [ArgumentCompleter({
+            $wordToComplete = $args[2]
+            _Get_PowerPlan |
+                Where-Object Name -Like "$wordToComplete*" |
+                Select-Object -ExpandProperty Name |
+                ForEach-Object { "'$_'" }
+        })]
+        [string[]]
+        $Name = '*'
+    )
+
+    begin {
+        $all = _Get_PowerPlan
+        $filtered = @{}
+    }
+
+    process {
+        $Name | ForEach-Object {
+            $all | Where-Object Name -Like $_ |
+                ForEach-Object { $filtered[$_.Id] = $_ }
+        }
+    }
+
+    end {
+        $filtered.Values
+    }
+}
+
 Class PowerPlanValidateSetGenerator: System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
-        return (Get-PowerPlan | Select-Object -ExpandProperty Name)
+        return (_Get_PowerPlan | Select-Object -ExpandProperty Name)
     }
 }
 
