@@ -12,7 +12,7 @@
 # RootModule = 'fkthat.powershell.utility.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,6 +69,7 @@ Description = 'The fkthat.powershell.utility module.'
 NestedModules =
     'CodeCoverage.psm1',
     'Content.psm1',
+    'Environment.psm1',
     'Git.psm1',
     'Password.psm1',
     'PowerPlan.psm1',
@@ -79,6 +80,7 @@ NestedModules =
 FunctionsToExport =
     'New-CodeCoverageReport',
     'Compare-Content', 'Update-Content', 'Update-ContentEol', 'Update-ContentEolToDos', 'Update-ContentEolToUnix',
+    'Get-EnvironmentVariable', 'Set-EnvironmentVariable', 'Remove-EnvironmentVariable',
     'Start-GitFlow', 'Clear-GitRepo',
     'Get-RandomPassword',
     'Get-PowerPlan', 'Switch-PowerPlan',
@@ -95,6 +97,7 @@ VariablesToExport = @()
 AliasesToExport =
     'nccr',
     'cdiff', 'dos2unix', 'sed', 'ueol', 'unix2dos',
+    'genv', 'senv', 'renv',
     'saflow', 'clgit',
     'gpwd',
     'gpwp', 'swpwp',
