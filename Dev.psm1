@@ -38,7 +38,7 @@ function Set-GitHubResourceRepository {
 function _Get_DevModuleNames {
     Join-Path $PSScriptRoot 'src' |
         Get-ChildItem -Directory -Filter "$ModulePrefix.*" |
-        Where { Join-Path $_ "$($_.Name).psd1" | Test-Path -PathType Leaf } |
+        Where-Object { Join-Path $_ "$($_.Name).psd1" | Test-Path -PathType Leaf } |
         Select-Object -ExpandProperty Name |
         ForEach-Object { $_.Substring($ModulePrefix.Length +1) }
 }
@@ -71,7 +71,8 @@ function Publish-DevModule {
 
         $names | ForEach-Object {
             $p = Join-Path $PSScriptRoot 'src' "$ModulePrefix.$_"
-            Publish-PSResource -Path $p -Repository GitHub -Credential $credential
+            Publish-PSResource -Path $p -Repository GitHub -Credential $credential `
+                -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
         }
     }
 }

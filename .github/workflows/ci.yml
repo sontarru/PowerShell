@@ -3,9 +3,9 @@ name: CI
 on:
   workflow_dispatch:
 
-# release:
-#   types:
-#     - published
+  release:
+    types:
+      - published
 
 jobs:
   ci:
@@ -19,5 +19,4 @@ jobs:
         shell: pwsh
         run: |
           Import-Module ./Dev.psm1
-          Register-GitHubResourceRepository
-          Publish-DevModule *
+          Publish-DevModule
