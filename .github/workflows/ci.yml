@@ -17,6 +17,6 @@ jobs:
 
       - name: Publish
         shell: pwsh
-        run: |
-          Import-Module ./Dev.psm1
-          Publish-DevModule
+        run: ./tools/Publish-Module.ps1
+        env:
+          REGISTRY_RW_PAT: ${{secrets.REGISTRY_RW_PAT}}
