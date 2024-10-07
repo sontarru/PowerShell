@@ -1,12 +1,35 @@
 # PowerShell module collection
 
-## Installation
+## Setup GitHub PSResourceRepository
+
+### Reset secret store
 
 ```powershell
-$env:GITHUB_REPOSITORY_OWNER = 'fkthat'
-$env:GITHUB_TOKEN = '***'
+Reset-SecretStore
+```
 
-Invoke-WebRequest `
-    "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY_OWNER/PowerShell/develop/Setup.ps1" |
-    Select-Object -ExpandProperty Content | Invoke-Expression
+### Turn off secret store password
+
+```powershell
+Set-SecretStoreConfiguration -Authentication None
+```
+
+### Add GitHub credential
+
+```powershell
+$password = ConvertTo-SecureString 'apikey' -AsPlainText -Force
+$credential = [pscredential]::new('fkthat', $password)
+Set-Secret GitHub -Vault SecretStore -Secret $credential
+```
+
+### Get pscredentialinfo
+
+```powershell
+$credentialinfo = [Microsoft.PowerShell.PSResourceGet.UtilClasses.PSCredentialInfo]::new('SecretStore', 'GitHub')
+```
+
+### Setup repo
+
+```powershell
+Set-PSResourceRepository GitHub -Uri https://nuget.pkg.github.com/fkthat/index.json -Trusted -CredentialInfo $credentialinfo
 ```
