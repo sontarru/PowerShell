@@ -12,7 +12,7 @@
 # RootModule = 'fkthat.powershell.utility.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.1'
+ModuleVersion = '2.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -67,6 +67,7 @@ Description = 'The fkthat.powershell.utility module.'
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules =
+    'Alias.psm1',
     'CodeCoverage.psm1',
     'Content.psm1',
     'Environment.psm1',
@@ -78,13 +79,22 @@ NestedModules =
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport =
+    # CodeCoverage.psm1
     'New-CodeCoverageReport',
-    'Compare-Content', 'Update-Content', 'Update-ContentEol', 'Update-ContentEolToDos', 'Update-ContentEolToUnix',
+    # Content.psm1
+    'Compare-Content', 'Update-Content', 'Update-ContentEol', 'Update-ContentEolToDos',
+        'Update-ContentEolToUnix',
+    # Environment.psm1
     'Get-EnvironmentVariable', 'Set-EnvironmentVariable', 'Remove-EnvironmentVariable',
+    # Git.psm1
     'Start-GitFlow', 'Clear-GitRepo',
+    # Password.psm1
     'Get-RandomPassword',
+    # PowerPlan.psm1
     'Get-PowerPlan', 'Switch-PowerPlan',
+    # Process.psm1
     'Get-CurrentProcess', 'Get-ParentProcess',
+    # SystemTray.psm1
     'Reset-SystemTray'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -95,13 +105,24 @@ VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport =
+    # Alias.psm1
+    '7z', 'code', 'docker', 'ffmpeg', 'gdiff', 'gh', 'less', 'node', 'npm', 'nvim', 'nvm',
+        'scp', 'ssh', 'sudo', 'tar', 'vbman', 'vs', 'winget',
+    # CodeCoverage.psm1
     'nccr',
+    # Content.psm1
     'cdiff', 'dos2unix', 'sed', 'ueol', 'unix2dos',
+    # Environment.psm1
     'genv', 'senv', 'renv',
+    # Git.psm1
     'saflow', 'clgit',
+    # Password.psm1
     'gpwd',
+    # PowerPlan.psm1
     'gpwp', 'swpwp',
+    # Process.psm1
     'pspar', 'pscur',
+    # SystemTray.psm1
     'rstray'
 
 # DSC resources to export from this module
