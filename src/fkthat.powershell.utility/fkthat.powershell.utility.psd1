@@ -107,7 +107,7 @@ VariablesToExport = @()
 AliasesToExport =
     # Alias.psm1
     '7z', 'code', 'docker', 'ffmpeg', 'gdiff', 'gh', 'less', 'node', 'npm', 'nvim', 'nvm',
-        'scp', 'ssh', 'sudo', 'tar', 'vbman', 'vs', 'winget',
+        'procexp', 'qemu', 'scp', 'ssh', 'sudo', 'tar', 'vbman', 'vs', 'winget',
     # CodeCoverage.psm1
     'nccr',
     # Content.psm1
