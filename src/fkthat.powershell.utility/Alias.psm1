@@ -15,6 +15,7 @@ $aliases = @{
     nvim    = "$env:ProgramFiles\Neovim\bin\nvim.exe"
     nvm     = "$env:APPDATA\nvm\nvm.exe"
     procexp = "$env:LOCALAPPDATA\Microsoft\WinGet\Links\procexp.exe"
+    qemu    = "$env:ProgramFiles\qemu\qemu-system-x86_64.exe"
     scp     = "$env:SystemRoot\System32\OpenSSH\scp.exe"
     ssh     = "$env:SystemRoot\System32\OpenSSH\ssh.exe"
     sudo    = "$env:ProgramFiles\gsudo\Current\gsudo.exe"
