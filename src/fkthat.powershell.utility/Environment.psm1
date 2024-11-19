@@ -2,156 +2,120 @@ $ErrorActionPreference = "Stop"
 
 if(-not $IsWindows) { return }
 
-enum Scope {
-    All = 0
-    User = 1
-    Machine = 2
-}
-
 $EnvRegKey = @{
-    [Scope]::User = 'HKCU:\Environment'
-    [Scope]::Machine = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
+    'System' = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
+    'User' = 'HKCU:\Environment'
 }
 
-function _Get_EnvironmentVariable {
-    $EnvRegKey.Keys | ForEach-Object {
-            $scope = $_
-            $key = Get-Item $EnvRegKey[$scope]
-
-            $key.GetValueNames() | ForEach-Object {
-                [PSCustomObject]@{
-                    Scope = [Scope]$scope
-                    Name = $_
-                    Value = $key.GetValue($_, $null, 'DoNotExpandEnvironmentNames')
-                }
-            }
-        }
-}
-
-function global:_EnvironmentVariableCompleter {
-    $wordToComplete = $args[2]
-    $fakeBoundParameters = $args[4]
-
-    if($fakeBoundParameters.ContainsKey('Scope')) {
-        $useScope = $fakeBoundParameters['Scope']
+Class EnvironmentVariableScopeValidateSetValuesGenerator: `
+    System.Management.Automation.IValidateSetValuesGenerator {
+    [string[]] GetValidValues() {
+        return $Script:EnvRegKey.Keys
     }
-    else {
-        $useScope = $null
-    }
-
-    _Get_EnvironmentVariable |
-        Where-Object { (-not $useScope) -or ($_.Scope -eq $useScope) } |
-        Where-Object Name -Like "$wordToComplete*" |
-        Select-Object -ExpandProperty Name |
-        ForEach-Object { "'$_'" }
 }
+
+#
+# Public API
+#
 
 function Get-EnvironmentVariable {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [SupportsWildcards()]
-        [ArgumentCompleter({ global:_EnvironmentVariableCompleter @args })]
         [string[]]
         $Name = '*',
 
         [Parameter()]
-        [Scope]
-        $Scope = 'All'
+        [ValidateSet([EnvironmentVariableScopeValidateSetValuesGenerator])]
+        [string[]]
+        $Scope = @('User', 'System')
     )
 
     begin {
-        $all = _Get_EnvironmentVariable |
-            Where-Object { -not $Scope -or $_.Scope -eq $Scope }
-
-        $filtered = @()
+        $names = @()
     }
 
     process {
-        $Name | ForEach-Object {
-            $n = $_
-
-            $all | Where-Object { $_.Name -like $n } |
-                ForEach-Object { $filtered += $_ }
-        }
+        $names += $Name
     }
 
     end {
-        $filtered | Sort-Object Scope, Name -Unique
+        $EnvRegKey.Keys |
+            Where-Object { $_ -in $Scope } |
+            Sort-Object |
+            ForEach-Object {
+                $s = $_
+                $rk = Get-Item -Path $EnvRegKey[$_]
+
+                $rk.GetValueNames() |
+                    Where-Object { $x = $_; $names | Where-Object { $x -like $_ } } |
+                    Sort-Object |
+                    ForEach-Object {
+                        $n = $_
+                        [PSCustomObject]@{
+                            Scope = $s
+                            Name = $n
+                            Value = $rk.GetValue($n, $null, 'DoNotExpandEnvironmentNames')
+                        }
+                    }
+            }
     }
 }
 
 function Set-EnvironmentVariable {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory, Position = 0, ParameterSetName = 'ByName')]
-        [ArgumentCompleter({ global:_EnvironmentVariableCompleter @args })]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $Name,
 
-        [Parameter(Mandatory, Position = 1, ParameterSetName = 'ByName')]
+        [Parameter(Mandatory, Position = 1)]
         [string]
         $Value,
 
-        [Parameter(ParameterSetName = 'ByName')]
-        [ValidateSet('User', 'Machine')]
-        [Scope]
+        [Parameter()]
+        [ValidateSet([EnvironmentVariableScopeValidateSetValuesGenerator])]
+        [string]
         $Scope = 'User',
 
-        [Parameter(ValueFromPipeline, ParameterSetName = 'ByInputObject')]
-        [psobject]
-        $InputObject
+        [Parameter()]
+        [switch]
+        $Force
     )
 
-    begin {
-        if($Name) {
-            $InputObject = [PSCustomObject]@{
-                Name = $Name
-                Value = $Value
-                Scope = $Scope
-            }
-        }
+    if ($Force -and -not $PSBoundParameters.ContainsKey('Confirm')) {
+        $ConfirmPreference = 'None'
     }
 
-    process {
-        $InputObject | ForEach-Object {
-            $path = $EnvRegKey[$_.Scope]
-            $null = Set-ItemProperty $path -Name $_.Name -Value $_.Value -Type ExpandString
-        }
-    }
+    Set-ItemProperty $EnvRegKey[$Scope] `
+        -Name $Name -Value $Value `
+        -Type ExpandString
 }
 
 function Remove-EnvironmentVariable {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory, Position = 0, ParameterSetName = 'ByName')]
-        [ArgumentCompleter({ global:_EnvironmentVariableCompleter @args })]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $Name,
 
-        [Parameter(ParameterSetName = 'ByName')]
-        [ValidateSet('User', 'Machine')]
-        [Scope]
+        [Parameter()]
+        [ValidateSet([EnvironmentVariableScopeValidateSetValuesGenerator])]
+        [string]
         $Scope = 'User',
 
-        [Parameter(ValueFromPipeline, ParameterSetName = 'ByInputObject')]
-        [psobject]
-        $InputObject
+        [Parameter()]
+        [switch]
+        $Force
     )
 
-    begin {
-        if($Name) {
-            $InputObject = [PSCustomObject]@{
-                Name = $Name
-                Scope = $Scope
-            }
-        }
+    if ($Force -and -not $PSBoundParameters.ContainsKey('Confirm')) {
+        $ConfirmPreference = 'None'
     }
 
-    process {
-        $path = $EnvRegKey[$_.Scope]
-        $null = Remove-ItemProperty $path -Name $_.Name
-    }
+    Remove-ItemProperty $EnvRegKey[$Scope] `
+        -Name $Name -Value $Value
 }
 
 Set-Alias genv Get-EnvironmentVariable
