@@ -210,4 +210,28 @@ Describe Set-EnvironmentVariable {
                 $Type -eq 'ExpandString'
             }
     }
+
+    It ' Calls Set-ItemProperty (by $InputObject) with the correct path and name.' {
+        [PSCustomObject]@{ Name = 'Foo'; Value = 'Bar'; Scope = 'System' },
+        [PSCustomObject]@{ Name = 'Baz'; Value = 'Ololo'; Scope = 'User' } |
+            Set-EnvironmentVariable
+
+        Should -Invoke -CommandName Set-ItemProperty `
+            -ModuleName Environment `
+            -ParameterFilter {
+                $Path -eq 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment' -and
+                $Name -eq 'Foo' -and
+                $Value -eq 'Bar' -and
+                $Type -eq 'ExpandString'
+            }
+
+        Should -Invoke -CommandName Set-ItemProperty `
+            -ModuleName Environment `
+            -ParameterFilter {
+                $Path -eq 'HKCU:\Environment' -and
+                $Name -eq 'Baz' -and
+                $Value -eq 'Ololo' -and
+                $Type -eq 'ExpandString'
+            }
+    }
 }

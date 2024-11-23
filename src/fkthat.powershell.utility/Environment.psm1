@@ -66,31 +66,51 @@ function Get-EnvironmentVariable {
 function Set-EnvironmentVariable {
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory, Position = 0)]
+        [Parameter(Mandatory, Position = 0, ParameterSetName = 'NameValueScope')]
         [string]
         $Name,
 
-        [Parameter(Mandatory, Position = 1)]
+        [Parameter(Mandatory, Position = 1, ParameterSetName = 'NameValueScope')]
         [string]
         $Value,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'NameValueScope')]
         [ValidateSet([EnvironmentVariableScopeValidateSetValuesGenerator])]
         [string]
         $Scope = 'User',
+
+        [Parameter(ValueFromPipeline, ParameterSetName = "InputObject")]
+        [psobject[]]
+        $InputObject,
 
         [Parameter()]
         [switch]
         $Force
     )
 
-    if ($Force -and -not $PSBoundParameters.ContainsKey('Confirm')) {
-        $ConfirmPreference = 'None'
+    begin {
+        if ($Force -and -not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = 'None'
+        }
+
+        if($PSCmdlet.ParameterSetName -eq 'NameValueScope') {
+            $InputObject = [pscustomobject]@{
+                Name = $Name
+                Value = $Value
+                Scope = $Scope
+            }
+            # stop warn
+            $null = $InputObject
+        }
     }
 
-    Set-ItemProperty $EnvRegKey[$Scope] `
-        -Name $Name -Value $Value `
-        -Type ExpandString
+    process {
+        $InputObject | ForEach-Object {
+            Set-ItemProperty $EnvRegKey[$_.Scope] `
+                -Name $_.Name -Value $_.Value `
+                -Type ExpandString
+        }
+    }
 }
 
 function Remove-EnvironmentVariable {
