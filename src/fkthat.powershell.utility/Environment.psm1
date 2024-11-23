@@ -134,8 +134,7 @@ function Remove-EnvironmentVariable {
         $ConfirmPreference = 'None'
     }
 
-    Remove-ItemProperty $EnvRegKey[$Scope] `
-        -Name $Name -Value $Value
+    Remove-ItemProperty $EnvRegKey[$Scope] -Name $Name
 }
 
 Set-Alias genv Get-EnvironmentVariable

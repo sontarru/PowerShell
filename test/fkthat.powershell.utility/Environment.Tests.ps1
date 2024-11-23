@@ -235,3 +235,31 @@ Describe Set-EnvironmentVariable {
             }
     }
 }
+
+Describe Remove-EnvironmentVariable {
+    BeforeAll {
+        Mock Remove-ItemProperty { } -ModuleName Environment
+    }
+
+    It ' Calls Remove-ItemProperty (user env variable).' {
+        Remove-EnvironmentVariable 'Foo' -Scope User
+
+        Should -Invoke -CommandName Remove-ItemProperty `
+            -ModuleName Environment `
+            -ParameterFilter {
+                $Path -eq 'HKCU:\Environment' -and
+                $Name -eq 'Foo'
+            }
+    }
+
+    It ' Calls Remove-ItemProperty (system env variable).' {
+        Remove-EnvironmentVariable 'Foo' -Scope System
+
+        Should -Invoke -CommandName Remove-ItemProperty `
+            -ModuleName Environment `
+            -ParameterFilter {
+                $Path -eq 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment' -and
+                $Name -eq 'Foo'
+            }
+    }
+}
