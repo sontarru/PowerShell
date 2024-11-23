@@ -179,3 +179,35 @@ Describe Get-EnvironmentVariable {
             Should -BeNullOrEmpty
     }
 }
+
+Describe Set-EnvironmentVariable {
+    BeforeAll {
+        Mock Set-ItemProperty { } -ModuleName Environment
+    }
+
+    It ' Calls Set-ItemProperty (System) with the correct path and name.' {
+        Set-EnvironmentVariable 'Foo' 'Bar' -Scope System
+
+        Should -Invoke -CommandName Set-ItemProperty `
+            -ModuleName Environment `
+            -ParameterFilter {
+                $Path -eq 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment' -and
+                $Name -eq 'Foo' -and
+                $Value -eq 'Bar' -and
+                $Type -eq 'ExpandString'
+            }
+    }
+
+    It ' Calls Set-ItemProperty (User) with the correct path and name.' {
+        Set-EnvironmentVariable 'Foo' 'Bar' -Scope User
+
+        Should -Invoke -CommandName Set-ItemProperty `
+            -ModuleName Environment `
+            -ParameterFilter {
+                $Path -eq 'HKCU:\Environment' -and
+                $Name -eq 'Foo' -and
+                $Value -eq 'Bar' -and
+                $Type -eq 'ExpandString'
+            }
+    }
+}
