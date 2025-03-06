@@ -137,6 +137,34 @@ function Remove-EnvironmentVariable {
     Remove-ItemProperty $EnvRegKey[$Scope] -Name $Name
 }
 
+function Export-EnvironmentVariable {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0)]
+        [string]
+        $Path
+    )
+
+    $r = [ordered]@{}
+
+    Get-EnvironmentVariable |
+        Group-Object Scope | Sort-Object Name |
+        ForEach-Object {
+            $e = [ordered]@{}
+            $_.Group | Sort-Object Name | ForEach-Object {
+                $e[$_.Name] = $_.Value
+            }
+            $r[$_.Name] = $e
+        }
+
+    $fout = $Path ?
+        { begin { Set-Content $Path '' -NoNewLine } process { Add-Content $Path $_ } } :
+        { process { $_ } }
+
+    $r | ConvertTo-Json | & $fout
+}
+
 Set-Alias genv Get-EnvironmentVariable
 Set-Alias senv Set-EnvironmentVariable
 Set-Alias renv Remove-EnvironmentVariable
+Set-Alias epenv Export-EnvironmentVariable

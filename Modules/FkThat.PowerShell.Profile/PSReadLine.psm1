@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
-$BlinkingBlock = "`e[1 q"
 $BlinkingBar = "`e[5 q"
+$BlinkingBlock = "`e[1 q"
 
 Set-PSReadLineOption -EditMode vi -ViModeIndicator Script `
     -ViModeChangeHandler {

@@ -42,4 +42,3 @@ function Prompt {
             "${White}`$ " +
             "${BlinkingBar}"
 }
-

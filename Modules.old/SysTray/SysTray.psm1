@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 if (-not $IsWindows) { return }
 
-function Reset-SystemTray {
+function Reset-SysTray {
     Stop-Process -Name 'explorer' -Force
 
     Remove-Item 'HKCU:\Control Panel\NotifyIconSettings' -Recurse -Force `
@@ -15,4 +15,5 @@ function Reset-SystemTray {
     Start-Process 'explorer'
 }
 
-Set-Alias rstray Reset-SystemTray
+Set-Alias rstray Reset-SysTray
+

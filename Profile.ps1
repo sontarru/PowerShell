@@ -1,2 +1,3 @@
 $ErrorActionPreference = 'Stop'
-Import-Module fkthat.powershell.profile
+
+Import-Module FkThat.PowerShell.Profile

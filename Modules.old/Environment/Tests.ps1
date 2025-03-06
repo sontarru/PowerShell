@@ -1,7 +1,5 @@
 BeforeAll {
-    Join-Path $PSScriptRoot '..' '..' 'src' `
-        'fkthat.powershell.utility' 'Environment.psm1' |
-        Import-Module -Force
+    Import-Module $PSScriptRoot -Force
 
     $envRegKey = @{
         'System' = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment'

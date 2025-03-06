@@ -18,7 +18,6 @@ function _Get_PowerPlan {
         }
 }
 
-
 function Get-PowerPlan {
     param (
         [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
