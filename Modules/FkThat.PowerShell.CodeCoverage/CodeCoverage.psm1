@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 $rgen = $IsWindows ? "$env:USERPROFILE\.dotnet\tools\reportgenerator.exe" : (which reportgenerator)
 
 if(-not (Test-Path $rgen -ErrorAction SilentlyContinue)) {
-    return
+    Write-Error 'The reportgenerator tool is not available.'
 }
 
 function New-CodeCoverageReport {
