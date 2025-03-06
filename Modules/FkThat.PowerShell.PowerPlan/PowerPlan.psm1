@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 if(-not $IsWindows) {
-    return
+    Write-Error 'Not supported platform.'
 }
 
 function _Get_PowerPlan {

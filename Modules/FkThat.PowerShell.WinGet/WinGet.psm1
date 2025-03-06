@@ -1,13 +1,15 @@
 $ErrorActionPreference = 'Stop'
 
-if($IsWindows) {
-    $winget = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
+if(-not $IsWindows) {
+    Write-Error 'Not supported platform.'
+}
 
-    if(Test-Path $winget) {
-        Set-Alias winget $winget
+$winget = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
 
-        Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
-            winget complete --word $args[0] --commandline $args[1] --position $args[2]
-        }
+if(Test-Path $winget) {
+    Set-Alias winget $winget
+
+    Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
+        winget complete --word $args[0] --commandline $args[1] --position $args[2]
     }
 }
