@@ -1,8 +1,5 @@
 $ErrorActionPreference = "Stop"
 
-# $PasswordChars = "!#%+23456789:=?@ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-# $PasswordChars = "!#%+23456789:?@ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-
 $script:PasswordChars = @{
     UpperCase = 'ABCDEFGHJKLMNPRSTUVWXYZ'
     LowerCase = 'abcdefghijkmnopqrstuvwxyz'
