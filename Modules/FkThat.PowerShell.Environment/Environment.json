@@ -1,0 +1,10 @@
+{
+  "User": {
+    "PATH": null
+  },
+  "System": {
+    "PATH": "%SystemRoot%\\System32;%SystemRoot%;%SystemRoot%\\System32\\Wbem",
+    "EDITOR": "%ProgramFiles%\\Neovim\\bin\\nvim.exe",
+    "PAGER": "%ProgramFiles%\\Git\\usr\\bin\\less.exe"
+  }
+}
