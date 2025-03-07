@@ -1,6 +1,19 @@
-# PowerShell module collection
+# PowerShell modules
 
 ## Setup GitHub PSResourceRepository
+
+### Install modules if required
+
+```powershell
+Install-PSResource Microsoft.PowerShell.SecretManagement
+Install-PSResource Microsoft.PowerShell.SecretStore
+```
+
+### Creating a Vault
+
+```powershell
+Register-SecretVault -Name SecretStore -ModuleName Microsoft.PowerShell.SecretStore -DefaultVault
+```
 
 ### Reset secret store
 
