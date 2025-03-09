@@ -23,7 +23,7 @@ $docker = $IsWindows ?
     "$env:ProgramFiles\Docker\Docker\resources\bin\docker.exe" :
     (which docker)
 
-if(Test-Path $docker) {
+if(Test-Path $docker -ErrorAction SilentlyContinue) {
     InstallFromPSGallery "DockerCompletion"
 }
 
@@ -31,7 +31,7 @@ $rgen = $IsWindows ?
     "$env:USERPROFILE\.dotnet\tools\reportgenerator.exe" :
     (which reportgenerator)
 
-if(Test-Path $rgen) {
+if(Test-Path $rgen -ErrorAction SilentlyContinue) {
     InstallFromGitHub 'CodeCoverage'
 }
 
