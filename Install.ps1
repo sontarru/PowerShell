@@ -50,7 +50,7 @@ if($IsWindows) {
         InstallFromGitHub 'WinGet'
     }
 
-    InstallFromGitHub 'Aliases', 'Environment', 'PowerPlan'
+    InstallFromGitHub 'Aliases', 'Environment', 'PowerPlan', 'SysTray'
 }
 
 #

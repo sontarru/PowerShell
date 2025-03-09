@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 
-if (-not $IsWindows) { return }
+if(-not $IsWindows) {
+    Write-Error 'Not supported platform.'
+}
 
 function Reset-SysTray {
     Stop-Process -Name 'explorer' -Force
