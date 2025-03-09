@@ -4,7 +4,7 @@
 RootModule = 'Content.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -35,7 +35,7 @@ CmdletsToExport = @()
 VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'crcont', 'udcont', 'udeol', 'dos2unix', 'unix2dos'
+AliasesToExport = 'crc', 'udc', 'udeol', 'dos2unix', 'unix2dos'
 
 }
 
