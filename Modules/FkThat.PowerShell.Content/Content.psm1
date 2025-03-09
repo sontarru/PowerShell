@@ -133,8 +133,8 @@ function Update-ContentEolToDos {
     }
 }
 
-Set-Alias cdiff Compare-Content
-Set-Alias sed Update-Content
-Set-Alias ueol Update-ContentEol
+Set-Alias crcont Compare-Content
+Set-Alias udcont Update-Content
+Set-Alias udeol Update-ContentEol
 Set-Alias dos2unix Update-ContentEolToUnix
 Set-Alias unix2dos Update-ContentEolToDos

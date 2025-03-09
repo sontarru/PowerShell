@@ -21,6 +21,8 @@ foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*"))
 }
 
 InstallFromGitHub "Profile"
+InstallFromGitHub "PasswordGen"
+InstallFromGitHub "Content"
 
 if(Get-Command git -ErrorAction SilentlyContinue) {
     InstallFromPSGallery "Posh-Git"
@@ -42,8 +44,6 @@ $rgen = $IsWindows ?
 if(Test-Path $rgen -ErrorAction SilentlyContinue) {
     InstallFromGitHub 'CodeCoverage'
 }
-
-InstallFromGitHub "PasswordGen"
 
 if($IsWindows) {
     if(Test-Path "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe") {
