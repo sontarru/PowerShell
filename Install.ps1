@@ -17,7 +17,7 @@ $moduleRoot = $IsWindows ?
     "$env:HOME/.local/share/powershell/Modules"
 
 foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*")) {
-    Rename-Item $moduleDir $moduleDir.Name.ToLowerInvariant()
+    Rename-Item $moduleDir $moduleDir.Name.ToLowerInvariant() -ErrorAction SilentlyContinue
 }
 
 InstallFromGitHub "Profile"
@@ -86,9 +86,7 @@ foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*"))
 
         $moduleXml.Save($moduleXmlFile.FullName)
 
-        if($moduleDir.Name -cne $moduleName) {
-            Rename-Item $moduleDir -NewName $moduleName
-        }
+        Rename-Item $moduleDir -NewName $moduleName -ErrorAction SilentlyContinue
     }
 }
 
