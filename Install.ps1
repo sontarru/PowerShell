@@ -91,3 +91,6 @@ foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*"))
         }
     }
 }
+
+Set-Content $PROFILE '$ErrorActionPreference = "Stop"'
+Add-Content $PROFILE 'Import-Module FkThat.PowerShell.Profile'
