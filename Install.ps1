@@ -12,6 +12,14 @@ function InstallFromGitHub([string[]] $Name) {
     }
 }
 
+$moduleRoot = $IsWindows ?
+    "$env:USERPROFILE\Documents\PowerShell\Modules" :
+    "$env:HOME/.local/share/powershell/Modules"
+
+foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*")) {
+    Rename-Item $moduleDir $moduleDir.Name.ToLowerInvariant()
+}
+
 InstallFromGitHub "Profile"
 
 if(Get-Command git -ErrorAction SilentlyContinue) {
@@ -48,10 +56,6 @@ if($IsWindows) {
 #
 # Capitalize modules
 #
-
-$moduleRoot = $IsWindows ?
-    "$env:USERPROFILE\Documents\PowerShell\Modules" :
-    "$env:HOME/.local/share/powershell/Modules"
 
 foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*")) {
     foreach($moduleVersionDir in (Get-ChildItem $moduleDir)) {
