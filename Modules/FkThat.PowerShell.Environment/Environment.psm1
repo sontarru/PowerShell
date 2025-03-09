@@ -10,10 +10,13 @@ $RegKeys = @{
 }
 function Import-Environment {
     [CmdletBinding(SupportsShouldProcess)]
-    param()
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [string]
+        $Path
+    )
 
-    $src = Join-Path $PSScriptRoot 'Environment.json'
-    $env = Get-Content $src | ConvertFrom-Json -AsHashtable
+    $env = Get-Content $Path | ConvertFrom-Json -AsHashtable
 
     foreach($scope in $env.Keys) {
         $reg = $RegKeys[$scope]
