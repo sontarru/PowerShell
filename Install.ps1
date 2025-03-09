@@ -86,9 +86,9 @@ foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*"))
         }
 
         $moduleXml.Save($moduleXmlFile.FullName)
-
-        Rename-Item $moduleDir -NewName $moduleName -ErrorAction SilentlyContinue
     }
+
+    Rename-Item $moduleDir -NewName $moduleName -ErrorAction SilentlyContinue
 }
 
 Set-Content $PROFILE '$ErrorActionPreference = "Stop"'
