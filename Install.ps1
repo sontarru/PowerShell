@@ -51,7 +51,7 @@ if($IsWindows) {
     }
 
     InstallFromGitHub 'Aliases', 'Environment', 'PowerPlan',
-        'SysTray', 'Process'
+        'SysTray', 'Process', 'WebSearch'
 }
 
 #
