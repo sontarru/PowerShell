@@ -6,9 +6,6 @@ RootModule = 'Environment.psm1'
 # Version number of this module.
 ModuleVersion = '0.0.2'
 
-# Supported PSEditions
-# CompatiblePSEditions = @()
-
 # ID used to uniquely identify this module
 GUID = '0c9a78f4-6934-4dca-9ce8-f22b0da14cfb'
 

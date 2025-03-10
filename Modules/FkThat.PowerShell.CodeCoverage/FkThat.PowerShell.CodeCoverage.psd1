@@ -4,10 +4,7 @@
 RootModule = 'CodeCoverage.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
-
-# Supported PSEditions
-# CompatiblePSEditions = @()
+ModuleVersion = '0.0.2'
 
 # ID used to uniquely identify this module
 GUID = '5637c38e-e4bd-4f1c-8b75-c739e807f38f'

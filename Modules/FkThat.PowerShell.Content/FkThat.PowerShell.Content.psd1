@@ -4,10 +4,7 @@
 RootModule = 'Content.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.2'
-
-# Supported PSEditions
-# CompatiblePSEditions = @()
+ModuleVersion = '0.0.3'
 
 # ID used to uniquely identify this module
 GUID = '7909a7cb-57af-4dd4-b14d-b9a7ea2d3039'

@@ -4,10 +4,7 @@
 RootModule = 'Process.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
-
-# Supported PSEditions
-# CompatiblePSEditions = @()
+ModuleVersion = '0.0.2'
 
 # ID used to uniquely identify this module
 GUID = '2c2a39ad-5641-471b-8334-470c20936ae8'

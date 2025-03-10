@@ -4,10 +4,7 @@
 RootModule = 'PowerPlan.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.3'
-
-# Supported PSEditions
-# CompatiblePSEditions = @()
+ModuleVersion = '0.0.4'
 
 # ID used to uniquely identify this module
 GUID = '9dd1fd05-ed66-4ef4-8b02-70e30f785f14'
