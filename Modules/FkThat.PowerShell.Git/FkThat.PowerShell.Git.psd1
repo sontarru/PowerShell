@@ -4,7 +4,7 @@
 RootModule = 'Git.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.3'
 
 # ID used to uniquely identify this module
 GUID = '65cd1c29-6c79-43c3-bbea-b4dc9cea74e8'

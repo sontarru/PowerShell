@@ -19,7 +19,7 @@ function Start-GitFlow {
     )
 
     if(-not $Base) {
-        $Base = (& $git branch --show-current)
+        $Base = (git branch --show-current)
     }
 
     git checkout $Base -b $Name &&
