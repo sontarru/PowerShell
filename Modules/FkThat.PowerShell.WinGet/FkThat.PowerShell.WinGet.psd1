@@ -4,10 +4,7 @@
 RootModule = 'WinGet.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.3'
-
-# Supported PSEditions
-# CompatiblePSEditions = @()
+ModuleVersion = '0.0.4'
 
 # ID used to uniquely identify this module
 GUID = '54996dcf-0733-4106-8826-8c8c050b7ef2'
