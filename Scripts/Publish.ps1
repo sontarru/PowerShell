@@ -5,7 +5,7 @@ param (
     $ApiKey
 )
 
-$moduleRoot = Join-Path $PSScriptRoot 'Modules'
+$moduleRoot = Join-Path $PSScriptRoot '..' 'Modules'
 
 foreach($mod in (Get-ChildItem $moduleRoot)) {
     $psd = Join-Path $mod "$($mod.Name).psd1"
