@@ -4,7 +4,7 @@
 RootModule = 'Environment.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.3'
 
 # ID used to uniquely identify this module
 GUID = '0c9a78f4-6934-4dca-9ce8-f22b0da14cfb'
@@ -25,7 +25,7 @@ Description = 'Environment tools.'
 NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Import-Environment'
+FunctionsToExport = 'Get-Environment', 'Import-Environment', 'Export-Environment'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -34,6 +34,6 @@ CmdletsToExport = @()
 VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'ipenv'
+AliasesToExport = 'genv', 'ipenv', 'epenv'
 
 }
