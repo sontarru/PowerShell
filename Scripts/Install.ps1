@@ -20,9 +20,13 @@ foreach($moduleDir in (Get-ChildItem $moduleRoot -Filter "FkThat.PowerShell.*"))
     Rename-Item $moduleDir $moduleDir.Name.ToLowerInvariant() -ErrorAction SilentlyContinue
 }
 
-InstallFromGitHub "Profile"
-InstallFromGitHub "PasswordGen"
-InstallFromGitHub "Content"
+InstallFromGitHub "Profile", "PasswordGen", "Content",
+
+$gh = $IsWindows ? "$env:ProgramFiles\GitHub CLI\gh.exe" : (which gh)
+
+if(Test-Path $gh -ErrorAction SilentlyContinue) {
+    InstallFromGitHub "GitHub"
+}
 
 if(Get-Command git -ErrorAction SilentlyContinue) {
     InstallFromPSGallery "Posh-Git"
