@@ -16,7 +16,7 @@ function Get-Environment {
 
         $rkey.GetValueNames() | ForEach-Object {
             $name = $_
-            $value = $rkey.GetValue($name, 'DoNotExpandEnvironmentNames')
+            $value = $rkey.GetValue($name, $null, 'DoNotExpandEnvironmentNames')
 
             [PSCustomObject]@{
                 Scope = $scope
@@ -45,7 +45,8 @@ function Import-Environment {
             $val = $env[$scope][$name]
 
             if($val) {
-                Set-ItemProperty $reg -Name $name -Value $val
+                Set-ItemProperty $reg -Name $name -Value $val `
+                    -Type ExpandString
             }
             else {
                 if(Get-ItemProperty $reg -Name $name -ErrorAction SilentlyContinue) {
