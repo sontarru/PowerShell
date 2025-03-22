@@ -4,7 +4,7 @@
 RootModule = 'Aliases.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.4'
+ModuleVersion = '0.0.5'
 
 # ID used to uniquely identify this module
 GUID = '4f574b2f-40da-45c2-bad0-2476275bb832'
@@ -34,9 +34,8 @@ CmdletsToExport = @()
 VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = '7z', 'code', 'ffmpeg', 'gdiff',
-    'less', 'nvim', 'procexp', 'scp', 'ssh',
-    'gsudo', 'tar', 'vs'
+AliasesToExport = '7z', 'code', 'ffmpeg', 'gdiff', 'gsudo',
+    'less', 'lua', 'nvim', 'procexp', 'scp', 'ssh', 'tar', 'vs'
 
 }
 
