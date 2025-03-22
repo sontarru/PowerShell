@@ -1,6 +1,7 @@
-#
-# Uninstall old versions
-#
+<#
+.SYNOPSIS
+Uninstalls old module (PSResource) versions.
+#>
 
 Get-InstalledPSResource | Select-Object Name, Version | Group-Object Name |
   ForEach-Object {

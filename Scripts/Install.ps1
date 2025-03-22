@@ -1,3 +1,8 @@
+<#
+.SYNOPSIS
+Installs modules (PSResources) from the PSGallery and GitHub repositories depending on
+the current platform (Windows or Linux) and environment (other application installed).
+#>
 function InstallFromPSGallery($Name) {
     Write-Host "Installing $Name"
     Install-PSResource $Name -Repository PSGallery -Reinstall
