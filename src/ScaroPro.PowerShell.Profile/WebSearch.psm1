@@ -1,9 +1,7 @@
-using namespace System.Collections.Generic
-
 $ErrorActionPreference = 'Stop'
 
-$DefaultStorePath = "$PSScriptRoot\WebSearch.json"
-$WseTypeName = "ScaroPro.PowerShell.Profile.WebSearchEngine"
+$WseJsonPath = "$PSScriptRoot/WebSearch.json"
+$WseTypeName = "ScaroPro.PowerShell.Profile.WebSearch"
 
 Update-TypeData -TypeName $WseTypeName `
     -MemberName "SiteUrl" -MemberType "ScriptProperty" -Value {
@@ -14,7 +12,7 @@ Update-TypeData -TypeName $WseTypeName `
     -Force
 
 Update-TypeData -TypeName $WseTypeName `
-    -MemberName "VimiumUrl" -MemberType "ScriptProperty" -Value {
+    -MemberName "Vimium" -MemberType "ScriptProperty" -Value {
         $this.Url -replace '\{terms\}','$s'
     } `
     -Force
@@ -28,132 +26,94 @@ Update-TypeData -TypeName $WseTypeName `
     -Force
 
 Update-TypeData -TypeName $WseTypeName `
-    -DefaultDisplayPropertySet "Key","Name","Url"
+    -DefaultDisplayPropertySet "Key","Name","Url" `
+    -Force
 
-function Get-WebSearchEngine {
+function Get-WebSearch {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [SupportsWildcards()]
         [ArgumentCompleter({
-            Get-WebSearchEngine "$($args[2])*" |
-                Select-Object -ExpandProperty Keyword
+            Get-WebSearch "$($args[2])*" |
+                Select-Object -ExpandProperty Key
         })]
         [string[]]
-        $Key,
-
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath
+        $Key = '*'
     )
 
     begin {
-        $result = @{}
-        $all = @()
-
-        try {
-            $all = Get-Content $StorePath |
-                ConvertFrom-Json | ForEach-Object {
-                    $k = $_.Key
-                    $name = $_.Name ? $_.Name : $kw
-                    $url = $_.Url
-
-                    if($k -and $name -and $url) {
-                        [PSCustomObject]@{
-                            PSTypeName = $WseTypeName
-                            Key = $k
-                            Name = $name
-                            Url = $url
-                        }
-                    }
-                }
-        }
-        catch {
-            # Do nothing.
-        }
+        $filters = @()
     }
 
     process {
-        $Key | ForEach-Object {
-            $filter = "$($_)*"
-            $all | ForEach-Object {
-                if($_.Key -like $filter) {
-                    $result[$_.Key] = $_
-                }
-            }
-        }
+        $filters += $Key
     }
 
     end {
-        $result.Values | Sort-Object Key
+        & {
+            try {
+                Get-Content $WseJsonPath |
+                    ConvertFrom-Json |
+                    Where-Object { $_.Key -and $_.Url } |
+                    ForEach-Object {
+                        [PSCustomObject]@{
+                            PSTypeName = $WseTypeName
+                            Key = $_.Key
+                            Name = $_.Name ? $_.Name : $_.Key
+                            Url = $_.Url
+                        }
+                    }
+            }
+            catch {
+                # Do nothing.
+            }
+        } |
+        Where-Object {
+            $x = $_
+            $filters | Where-Object { $x.Key -like "$_*" }
+        }
     }
 }
 
-function Import-WebSearchEngine {
+function Import-WebSearch {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [SupportsWildcards()]
         [string[]]
         # The path to the source file to import from.
-        $Path,
-
-        [switch]
-        # Append to the existing search engines.
-        $Append,
-
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath
+        $Path
     )
 
     begin {
-        $wse = @{}
-
-        if($Append) {
-            Get-WebSearchEngine | ForEach-Object {
-                $wse[$_.Key] = $_
-            }
-        }
+        $wse = [ordered]@{}
     }
 
     process {
         $Path | Get-Item -ErrorAction SilentlyContinue |
             ForEach-Object {
-                try {
-                    Get-Content $_ | ConvertFrom-Json -AsHashtable
-                } catch {
-                    # do nothing
-                }
+                try { Get-Content $_ | ConvertFrom-Json -AsHashtable }
+                catch { <# do nothing #> }
             } |
+            ForEach-Object { $_.GetEnumerator() } |
+            Where-Object { $_.Key -and $_.Value -and $_.Value.Url } |
             ForEach-Object {
-                foreach ($key in $_.Keys) {
-                    if($key) {
-                        $props = $_[$key]
-                        $name = $props.Name
-                        $name = $name ? $name : $key
-                        if($name) {
-                            $url = $props.Url
-                            if($url) {
-                                $wse[$key] = [pscustomobject]@{
-                                    Key = $key
-                                    Name = $name
-                                    Url = $url
-                                }
-                            }
-                        }
-                    }
+                $wse[$_.Key] = [pscustomobject]@{
+                    Key = $_.Key
+                    Name = $_.Value.Name ? $_.Value.Name : $_.Key
+                    Url = $_.Value.Url
                 }
             }
     }
 
     end {
-        $wse.Values | Sort-Object Key |
-            ConvertTo-Json | Out-File $StorePath
+        $wse.Values | ConvertTo-Json |
+            Out-File $WseJsonPath
     }
 }
 
-function Export-WebSearchEngine {
+function Export-WebSearch {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Position = 0)]
@@ -165,31 +125,26 @@ function Export-WebSearchEngine {
         # Export to VimiumC omnibar search settings.
         $Vimium,
 
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath
+        [switch]
+        $Force
     )
 
-    $wse = Get-WebSearchEngine -StorePath $StorePath
+    $wse = Get-WebSearch
 
     if($Vimium) {
         $result = $wse | ForEach-Object {
-            "$($_.Key): $($_.VimiumUrl) blank=$($_.SiteUrl) $($_.Name)"
+            "$($_.Key): $($_.Vimium) blank=$($_.SiteUrl) $($_.Name)"
         }
     }
     else {
         $result = $wse | ForEach-Object `
             -Begin { $r = [ordered]@{} } `
-            { $r[$_.Key] = @{ Name = $_.Name; Url = $_.Url } } `
+            { $r[$_.Key] = [ordered]@{ Name = $_.Name; Url = $_.Url } } `
             -End { $r } |
             ConvertTo-Json
     }
 
     if($Path) {
-        if(Test-Path $Path -PathType Container) {
-            Remove-Item $Path -Recurse -Force:$Force
-        }
-
         Set-Content $Path -Value $result -Force:$Force
     }
     else {
@@ -201,68 +156,59 @@ function Search-Web {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0)]
+        [ArgumentCompleter({
+            Get-WebSearch "$($args[2])*" |
+                Select-Object -ExpandProperty Key
+        })]
         [string[]]
         $Key,
-
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath,
 
         [Parameter(ValueFromRemainingArguments)]
         [string[]]
         $Term
     )
 
-    Get-WebSearchEngine $Key -StorePath $StorePath |
-        ForEach-Object { Start-Process ($Term ? ($_.BuildSearchUrl($Term)) : $_.SiteUrl) }
+    Get-WebSearch $Key | ForEach-Object {
+        Start-Process ($Term ? ($_.BuildSearchUrl($Term)) : $_.SiteUrl)
+    }
 }
 
 function Search-Bing {
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath,
-
         [Parameter(ValueFromRemainingArguments)]
         [string[]]
         $Term
     )
 
-    Search-Web 'b' -StorePath $StorePath $Term
+    Search-Web 'b' -$Term
 }
+
 function Search-MS {
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath,
-
         [Parameter(ValueFromRemainingArguments)]
         [string[]]
         $Term
     )
 
-    Search-Web 'ms' -StorePath $StorePath $Term
+    Search-Web 'ms' $Term
 }
 
 function Search-Api {
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [string]
-        $StorePath = $DefaultStorePath,
-
         [Parameter(ValueFromRemainingArguments)]
         [string[]]
         $Term
     )
 
-    Search-Web 'api' -StorePath $StorePath $Term
+    Search-Web 'api' $Term
 }
 
-Set-Alias gwse Get-WebSearchEngine
-Set-Alias ipwse Import-WebSearchEngine
+Set-Alias gwse Get-WebSearch
+Set-Alias ipwse Import-WebSearch
+Set-Alias epwse Export-WebSearch
 Set-Alias srweb Search-Web
 Set-Alias srbing Search-Bing
 Set-Alias srms Search-MS

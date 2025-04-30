@@ -25,4 +25,6 @@ NestedModules =
     'VSCode.psm1',
     'WebSearch.psm1',
     'WinGet.psm1'
+
+FileList = 'WebSearch.json'
 }
