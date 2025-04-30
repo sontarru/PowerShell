@@ -7,7 +7,11 @@ if(-not $gh -or -not (Test-Path $gh)) {
 }
 
 Register-ArgumentCompleter -Native -CommandName gh -ScriptBlock {
-    gh completion --shell powershell | Out-String | Invoke-Expression
+    # Cannot run `gh completion` directly since it places
+    # functions to the wrong scope in this case.
+    $null = New-Module -ScriptBlock {
+        gh completion --shell powershell | Out-String | Invoke-Expression
+    }
 }
 
 function New-GitHubIssue {
