@@ -1,7 +1,5 @@
 $ErrorActionPreference = 'Stop'
 
-
-
 if(-not $IsWindows) {
     return
 }
@@ -20,6 +18,7 @@ if(-not $IsWindows) {
     scp     = "$env:SystemRoot\System32\OpenSSH\scp.exe"
     ssh     = "$env:SystemRoot\System32\OpenSSH\ssh.exe"
     tar     = "$env:ProgramFiles\Git\usr\bin\tar.exe"
+    vbman   = "$env:ProgramFiles\Oracle\VirtualBox\VBoxManage.exe"
     vs      = "$env:ProgramFiles\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe"
 }.GetEnumerator() | ForEach-Object {
     if(Test-Path $_.Value) {
