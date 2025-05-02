@@ -181,7 +181,7 @@ function Search-Bing {
         $Term
     )
 
-    Search-Web 'b' -$Term
+    Search-Web 'b' $Term
 }
 
 function Search-MS {
