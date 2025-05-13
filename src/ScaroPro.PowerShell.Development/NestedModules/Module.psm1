@@ -111,7 +111,7 @@ function New-DevelopmentModule {
     }
 }
 
-function Update-DevelopmentModule {
+function Update-DevelopmentModuleManifest {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -136,7 +136,7 @@ function Update-DevelopmentModule {
         foreach($name in $ShortName) {
             $fullName = "$namePrefix.$name"
             $modulePath = Join-Path $srcPath $fullName
-            $manifestPath = Join-Path $moduleRootPath "$fullName.psd1"
+            $manifestPath = Join-Path $modulePath "$fullName.psd1"
             $rootModuleName = "$fullName.psm1"
             $rootModulePath = Join-Path $modulePath $rootModuleName
             $nestedModulesPath = Join-Path $modulePath "NestedModules"
@@ -148,7 +148,6 @@ function Update-DevelopmentModule {
 
             $updateManifestArgs = @{
                 Path = $manifestPath
-                RootModule = ""
                 NestedModules = @()
                 FunctionsToExport = @()
                 AliasesToExport = @()
@@ -156,7 +155,7 @@ function Update-DevelopmentModule {
 
             # Add version
             if($Version) {
-                $updateManifestArgs.Version = $Version
+                $updateManifestArgs.ModuleVersion = $Version
             }
 
             # *.psm1 files to scan for functions and aliases.
@@ -215,11 +214,23 @@ function Optimize-DevelopmentModuleManifest {
         $ShortName,
 
         [Parameter(Mandatory, ParameterSetName = "ByPath")]
-        [string]
+        [string[]]
         $Path
     )
 
     begin {
+        if($Path) {
+            $Path | ForEach-Object {
+                $tmpManifest = New-TemporaryFile
+
+                Get-Content $_ | ForEach-Object {
+                    if(($_ -notmatch '^\s*$') -and ($_ -notmatch '^\s*#')) { $_ }
+                } | Out-File $tmpManifest
+
+                Move-Item $tmpManifest $_ -Force
+            }
+        }
+
         $manifests = @{}
     }
 
