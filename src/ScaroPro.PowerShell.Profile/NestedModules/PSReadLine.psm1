@@ -1,3 +1,7 @@
+#
+# Sets PSReadLine module options.
+#
+
 $ErrorActionPreference = 'Stop'
 
 $BlinkingBar = "`e[5 q"

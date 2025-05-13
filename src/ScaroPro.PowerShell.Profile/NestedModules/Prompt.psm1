@@ -1,3 +1,7 @@
+#
+# Customize the PowerShell prompt string.
+#
+
 $ErrorActionPreference = 'Stop'
 
 $White = "`e[37m";

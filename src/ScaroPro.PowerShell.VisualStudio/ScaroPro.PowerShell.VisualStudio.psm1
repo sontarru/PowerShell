@@ -1,13 +1,13 @@
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = "Stop"
 
 if(-not $IsWindows) {
-    return
+    Write-Error "The current platform '$($PSVersionTable.Platform)' is not supported."
 }
 
 $vs = "$env:ProgramFiles\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe"
 
-if(-not (Test-Path $vs)) {
-    return
+if(-not (Get-Command $vs -ErrorAction SilentlyContinue)) {
+    Write-Error "The executables '$vs' is not found."
 }
 
 function Start-VisualStudio {
@@ -43,4 +43,5 @@ function Start-VisualStudio {
     }
 }
 
+Set-Alias devenv $vs
 Set-Alias savs Start-VisualStudio
