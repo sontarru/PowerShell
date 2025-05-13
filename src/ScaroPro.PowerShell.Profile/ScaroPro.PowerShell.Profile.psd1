@@ -5,10 +5,16 @@ Author = 'Scaro.Pro'
 CompanyName = 'Scaro.Pro'
 Copyright = '(c) Scaro.Pro, 2025'
 Description = 'PowerShell profile.'
-
-NestedModules =
-    'NestedModules/Prompt.psm1',
-    'NestedModules/PSReadLine.psm1',
-    'NestedModules/Git.psm1',
-    'NestedModules/DotNet.psm1'
+NestedModules = @('NestedModules/Docker.psm1', 
+               'NestedModules/DotNet.psm1', 
+               'NestedModules/Git.psm1', 
+               'NestedModules/Prompt.psm1', 
+               'NestedModules/PSReadLine.psm1')
+FunctionsToExport = 'Prompt'
+CmdletsToExport = @()
+AliasesToExport = @()
+PrivateData = @{
+    PSData = @{
+    } 
+} 
 }
