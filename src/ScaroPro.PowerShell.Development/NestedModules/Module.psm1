@@ -2,23 +2,44 @@ $ErrorActionPreference = 'Stop'
 
 function Get-DevelopmentModule {
     [CmdletBinding()]
-    param ()
+    param (
+        [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [SupportsWildcards()]
+        [ArgumentCompleter({
+            Get-DevelopmentModule "$($args[2])*" |
+                Select-Object -ExpandProperty ShortName
+        })]
+        [string[]]
+        $ShortName
+    )
 
-    $options = Get-DevelopmentOptions
-    $rootPath = $options.RootPath
-    $moduleNamePrefix = $options.ModuleNamePrefix
-    $srcPath = Join-Path $rootPath 'src'
+    begin {
+        $options = Get-DevelopmentOptions
+        $rootPath = $options.RootPath
+        $moduleNamePrefix = $options.ModuleNamePrefix
+        $srcPath = Join-Path $rootPath 'src'
 
-    Get-ChildItem $srcPath -Directory -Filter "$moduleNamePrefix.*" |
-        Where-Object { Join-Path $_.FullName "$($_.Name).psd1" | Test-Path -PathType Leaf } |
-        ForEach-Object {
-            [PSCustomObject]@{
-                Name = $_.Name
-                ShortName = $_.Name.Substring($moduleNamePrefix.Length + 1)
-                Path = $_.FullName
-                ManifestPath = (Join-Path $_.FullName "$($_.Name).psd1")
+        $all = Get-ChildItem $srcPath -Directory -Filter "$moduleNamePrefix.*" |
+            Where-Object { Join-Path $_.FullName "$($_.Name).psd1" | Test-Path -PathType Leaf } |
+            ForEach-Object {
+                [PSCustomObject]@{
+                    Name = $_.Name
+                    ShortName = $_.Name.Substring($moduleNamePrefix.Length + 1)
+                    Path = $_.FullName
+                    ManifestPath = (Join-Path $_.FullName "$($_.Name).psd1")
+                }
             }
+    }
+
+    process {
+        $ShortName | ForEach-Object {
+            $all = $all | Where-Object ShortName -Like $_
         }
+    }
+
+    end {
+        $all
+    }
 }
 
 function New-DevelopmentModule {
@@ -112,9 +133,14 @@ function New-DevelopmentModule {
 }
 
 function Update-DevelopmentModuleManifest {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [SupportsWildcards()]
+        [ArgumentCompleter({
+            Get-DevelopmentModule "$($args[2])*" |
+                Select-Object -ExpandProperty ShortName
+        })]
         [string[]]
         $ShortName,
 
@@ -123,20 +149,30 @@ function Update-DevelopmentModuleManifest {
         $Version,
 
         [switch]
-        $Optimize
+        $Optimize,
+
+        [switch]
+        $Force
     )
 
     begin {
-        $options = Get-DevelopmentOptions
-        $srcPath = Join-Path $options.RootPath "src"
-        $namePrefix = $options.ModuleNamePrefix
+        if ($Force -and -not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = 'None'
+        }
+
+        $modules = @{}
     }
 
     process {
-        foreach($name in $ShortName) {
-            $fullName = "$namePrefix.$name"
-            $modulePath = Join-Path $srcPath $fullName
-            $manifestPath = Join-Path $modulePath "$fullName.psd1"
+        Get-DevelopmentModule $ShortName |
+            ForEach-Object { $modules[$_.ShortName] = $_ }
+    }
+
+    end {
+        foreach($module in $modules.Values) {
+            $fullName = $module.Name
+            $modulePath = $module.Path
+            $manifestPath = $module.ManifestPath
             $rootModuleName = "$fullName.psm1"
             $rootModulePath = Join-Path $modulePath $rootModuleName
             $nestedModulesPath = Join-Path $modulePath "NestedModules"
@@ -151,6 +187,8 @@ function Update-DevelopmentModuleManifest {
                 NestedModules = @()
                 FunctionsToExport = @()
                 AliasesToExport = @()
+                VariablesToExport = @()
+                CmdletsToExport = @()
             }
 
             # Add version
@@ -169,12 +207,11 @@ function Update-DevelopmentModuleManifest {
 
             # Fill nested modules.
             if(Test-Path $nestedModulesPath -PathType Container) {
-                $updateManifestArgs.NestedModules =
-                    Get-ChildItem $nestedModulesPath -File -Filter "*.psm1" |
-                        ForEach-Object {
-                            $modulesToScan += $_.FullName
-                            "NestedModules/$($_.Name)"
-                        }
+                Get-ChildItem $nestedModulesPath -File -Filter "*.psm1" |
+                    ForEach-Object {
+                        $modulesToScan += $_.FullName
+                        $updateManifestArgs.NestedModules += "NestedModules/$($_.Name)"
+                    }
             }
 
             # Fill functions and aliases to export
@@ -187,64 +224,66 @@ function Update-DevelopmentModuleManifest {
             }
 
             # Do update
-            Update-ModuleManifest @updateManifestArgs
+            Update-PSModuleManifest @updateManifestArgs
 
             # Clean up the module manifest
             if($Optimize) {
-                Optimize-DevelopmentModuleManifest -Path $manifestPath
+                Optimize-DevelopmentModuleManifest -Path $manifestPath -Force:$Force
             }
         }
     }
 }
 
-[System.FlagsAttribute()]
-Enum OptimizeDevelopmentModuleOptions {
-    None = 0
-    Comments = 1
-    EmptyLines = 2
-    All = 3
-}
-
+<#
+.SYNOPSIS
+Removes empty lines and comments from the module manifest file.
+#>
 function Optimize-DevelopmentModuleManifest {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName,
             ParameterSetName = "ByShortName")]
+        [SupportsWildcards()]
+        [ArgumentCompleter({
+            Get-DevelopmentModule "$($args[2])*" |
+                Select-Object -ExpandProperty ShortName
+        })]
         [string[]]
         $ShortName,
 
         [Parameter(Mandatory, ParameterSetName = "ByPath")]
         [string[]]
-        $Path
+        $Path,
+
+        [switch]
+        $Force
     )
 
     begin {
-        if($Path) {
-            $Path | ForEach-Object {
-                $tmpManifest = New-TemporaryFile
-
-                Get-Content $_ | ForEach-Object {
-                    if(($_ -notmatch '^\s*$') -and ($_ -notmatch '^\s*#')) { $_ }
-                } | Out-File $tmpManifest
-
-                Move-Item $tmpManifest $_ -Force
-            }
+        if ($Force -and -not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = 'None'
         }
 
-        $manifests = @{}
+        $manifestPaths = @{}
+
+        if($Path) {
+            $Path | Get-Item -Filter "*.psd1" -ErrorAction SilentlyContinue |
+                ForEach-Object { $manifestPaths[$_.FullName] = $true }
+        }
     }
 
     process {
-        $ShortName | ForEach-Object {
-            Get-DevelopmentModule $_
-        } | ForEach-Object {
-            $manifests[$_.ShortName] = $manifests.ManifestPath
-        }
+        $ShortName | ForEach-Object { Get-DevelopmentModule $_ } |
+            ForEach-Object { $manifestPahts[$_.ManifestPath] = $true }
     }
 
     end {
-        $manifests.Values | ForEach-Object {
-            Optimize-DevelopmentModuleManifest -Path $_
+        $manifestPaths.Keys | ForEach-Object {
+            (Get-Content $_ | ForEach-Object {
+                if(($_ -notmatch '^\s*$') -and ($_ -notmatch '^\s*#')) {
+                    $_ -replace '#.*$',''
+                }
+            }) | Set-Content -Path $_
         }
     }
 }
