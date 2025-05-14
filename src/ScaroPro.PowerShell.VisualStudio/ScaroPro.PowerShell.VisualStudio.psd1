@@ -9,7 +9,7 @@ Description = 'The VisualStudio module.'
 NestedModules = @()
 FunctionsToExport = 'Start-VisualStudio'
 CmdletsToExport = @()
-AliasesToExport = 'devenv', 'savs'
+AliasesToExport = 'devenv', 'savs', 'vs'
 PrivateData = @{
     PSData = @{
     } 

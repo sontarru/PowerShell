@@ -1,13 +1,13 @@
 $ErrorActionPreference = "Stop"
 
 if(-not $IsWindows) {
-    Write-Error "The current platform '$($PSVersionTable.Platform)' is not supported."
+    Write-Error "The '$($PSVersionTable.Platform)' platform is not supported."
 }
 
 $vs = "$env:ProgramFiles\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe"
 
 if(-not (Get-Command $vs -ErrorAction SilentlyContinue)) {
-    Write-Error "The executables '$vs' is not found."
+    Write-Error "The '$vs' executable is not found."
 }
 
 function Start-VisualStudio {
@@ -22,26 +22,31 @@ function Start-VisualStudio {
     )
 
     begin {
-        $sln = [System.Collections.Generic.HashSet[string]]::new()
+        $paths = @{}
     }
 
     process {
-        $Path | Get-Item -ErrorAction SilentlyContinue | ForEach-Object {
-            if($_ -is [System.IO.FileInfo] -and $_.Extension -eq '.sln') {
-                $_
+        $Path | Get-Item -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                if($_ -is [System.IO.FileInfo] -and $_.Extension -eq '.sln') {
+                    $_
+                }
+                if($_ -is [System.IO.DirectoryInfo]) {
+                    Get-ChildItem $_ -File -Filter '*.sln' -Recurse:$Recurse
+                }
+            } |
+            ForEach-Object {
+                $paths[$_.FullName] = $true
             }
-            if($_ -is [System.IO.DirectoryInfo]) {
-                Get-ChildItem $_ -File -Filter '*.sln' -Recurse:$Recurse
-            }
-        } | ForEach-Object { $null = $sln.Add($_.FullName) }
     }
 
     end {
-        $sln.GetEnumerator() | ForEach-Object {
+        $paths.Keys | ForEach-Object {
             & $vs $_
         }
     }
 }
 
 Set-Alias devenv $vs
+Set-Alias vs $vs
 Set-Alias savs Start-VisualStudio
