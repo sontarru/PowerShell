@@ -11,7 +11,8 @@ NestedModules =
     'NestedModules/DotNet.psm1',
     'NestedModules/Git.psm1',
     'NestedModules/Prompt.psm1',
-    'NestedModules/PSReadLine.psm1'
+    'NestedModules/PSReadLine.psm1',
+    'NestedModules/WinGet.psm1'
 
 PrivateData = @{
     PSData = @{
