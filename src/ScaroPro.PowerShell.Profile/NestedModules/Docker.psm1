@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 
-$docker = $IsWindows ? "" : (which docker)
+$docker = $IsWindows ? "$env:ProgramFiles\Docker\Docker\resources\bin\docker.exe" : (which docker)
 
 if(Get-Command $docker -ErrorAction SilentlyContinue) {
     Set-Alias docker $docker
