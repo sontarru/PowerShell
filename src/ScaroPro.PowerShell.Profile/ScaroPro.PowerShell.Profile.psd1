@@ -12,7 +12,9 @@ NestedModules =
     'NestedModules/Git.psm1',
     'NestedModules/Prompt.psm1',
     'NestedModules/PSReadLine.psm1',
-    'NestedModules/WinGet.psm1'
+    'NestedModules/WinGet.psm1',
+    'NestedModules/GitHub.psm1',
+    'NestedModules/GitLab.psm1'
 
 PrivateData = @{
     PSData = @{
