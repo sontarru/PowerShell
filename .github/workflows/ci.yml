@@ -7,6 +7,10 @@ on:
     types:
       - published
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   ci:
     name: CI
@@ -15,4 +19,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-    # TODO: add publish job
+      - name: Setup PowerShell
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery
+
+      - name: Setup GitHub repository
+        shell: pwsh
+        run: Set-PSResourceRepository GitHub -Uri https://nuget.pkg.github.com/sontarru/index.json -Trusted
+
+      - name: Publish modules
+        shell: pwsh
+        run: ./Publish.ps1 -ApiKey $env:APIKEY
+        env:
+          APIKEY: ${{secrets.GITHUB_TOKEN}}

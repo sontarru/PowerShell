@@ -38,35 +38,42 @@ param (
     $SecretVault
 )
 
-$ErrorActionPreference = 'Stop'
+begin {
+    $ErrorActionPreference = 'Stop'
 
-if(-not $ApiKey) {
-    if(-not $SecretVault) {
-        $SecretVault = Get-SecretVault |
-            Where-Object IsDefault |
-            Select-Object -ExpandProperty Name
+    if(-not $ApiKey) {
+        if(-not $SecretVault) {
+            $SecretVault = Get-SecretVault |
+                Where-Object IsDefault |
+                Select-Object -ExpandProperty Name
 
-            if(-not $SecretVault) {
-                Write-Error 'Default secret vault is not found.'
-            }
+                if(-not $SecretVault) {
+                    Write-Error 'Default secret vault is not found.'
+                }
+        }
+
+        $secret = Get-Secret 'GitHub' -Vault $SecretVault
+        $ApiKey = ConvertFrom-SecureString $secret.Password -AsPlainText
     }
 
-    $secret = Get-Secret 'GitHub' -Vault $SecretVault
-    $ApiKey = ConvertFrom-SecureString $secret.Password -AsPlainText
+    $srcdir = Join-Path $PSScriptRoot 'src'
+
+    $moddir = @{}
 }
 
-$prefix = "Sontar.PowerShell"
-$moduleRoot = Join-Path $PSScriptRoot 'src'
-
-foreach($modName in $Name) {
-    $psd = Join-Path $moduleRoot "$prefix.$modName" "$prefix.$modName.psd1"
-    $ver = (Get-Content $psd -Raw | Invoke-Expression).ModuleVersion
-
-    if(-not (Find-PSResource "$prefix.$modName" -Version $ver -Repository GitHub -ErrorAction SilentlyContinue)) {
-        Write-Host "Publishing $modName."
-        Publish-PSResource $psd -Repository GitHub -ApiKey $ApiKey -ErrorAction Continue
+process {
+    $Name | ForEach-Object {
+        Get-ChildItem $srcdir -Directory -Filter "Sontar.PowerShell.$_"
+    } | ForEach-Object {
+        $moddir[$_.Name] = $_
     }
-    else {
-        Write-Host "Skipping $modName."
+}
+
+end {
+    $moddir.Values | ForEach-Object {
+        Write-Host "Publishing $($_.Name)"
+        $psd = Join-Path $_.FullName "$($_.Name).psd1"
+        Publish-PSResource $psd -Repository GitHub -ApiKey $ApiKey -ErrorAction SilentlyContinue
+        if(-not $?) { Write-Warning "$($Error[0])" }
     }
 }
