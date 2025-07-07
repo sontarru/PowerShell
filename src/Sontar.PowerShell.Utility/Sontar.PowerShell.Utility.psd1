@@ -1,6 +1,6 @@
 @{
 RootModule = 'Sontar.PowerShell.Utility.psm1'
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.1.0'
 GUID = 'b19e8c97-93b2-4dfd-9cd8-de4d77e225b7'
 Author = 'rnovo'
 CompanyName = 'rnovo'
@@ -19,21 +19,21 @@ NestedModules = @('NestedModules\CodeCoverage.psm1',
                'NestedModules\VisualStudio.psm1', 
                'NestedModules\VSCode.psm1', 
                'NestedModules\WebSearch.psm1')
-FunctionsToExport = 'Assert-Command', 'Assert-Windows', 'New-CodeCoverageReport', 
-               'Get-ReportGenerator', 'Update-ContentEolToDos', 'Update-ContentEol', 
-               'Compare-Content', 'Update-Content', 'Update-ContentEolToUnix', 
-               'Import-Env', 'Start-GitFlow', 'Clear-GitRepo', 'Get-Git', 
-               'Get-RandomHostName', 'Import-HtmlAgilityPack', 'Get-Html', 
-               'Test-PasswordStrength', 'Get-RandomPassword', 'Switch-PowerPlan', 
-               'Get-PowerPlan', 'Get-CurrentProcess', 'Get-ParentProcess', 
-               'Reset-SystemTray', 'Start-VisualStudio', 'Get-VisualStudio', 
-               'Start-VSCode', 'Get-VSCode', 'Search-Bing', 'Get-WebSearch', 
-               'Search-Web', 'Search-Api', 'Search-MS'
+FunctionsToExport = 'Assert-Command', 'Assert-Windows', 'Get-ReportGenerator', 
+               'New-CodeCoverageReport', 'Update-Content', 'Update-ContentEol', 
+               'Compare-Content', 'Update-ContentEolToDos', 
+               'Update-ContentEolToUnix', 'Import-Env', 'Start-GitFlow', 
+               'Clear-GitRepo', 'Get-Git', 'Get-RandomHostName', 'Get-Html', 
+               'Import-HtmlAgilityPack', 'Test-PasswordStrength', 
+               'Get-RandomPassword', 'Get-PowerPlan', 'Switch-PowerPlan', 
+               'Get-ParentProcess', 'Get-CurrentProcess', 'Reset-SystemTray', 
+               'Get-VisualStudio', 'Start-VisualStudio', 'Get-VSCode', 'Start-VSCode', 
+               'Search-MS', 'Get-WebSearch', 'Search-Bing', 'Search-Web', 'Search-Api'
 CmdletsToExport = @()
 VariablesToExport = '*'
-AliasesToExport = 'nccr', 'udc', 'udeol', 'dos2unix', 'sed', 'crc', 'fdiff', 'unix2dos', 'ipenv', 
-               'clgrepo', 'sagflow', 'ghtml', 'tpwd', 'gpwd', 'swpwp', 'gpwp', 'pspar', 'gpscur', 
-               'gpspar', 'pscur', 'savs', 'sacode', 'srbing', 'srms', 'gwse', 'srapi', 'srweb'
+AliasesToExport = 'nccr', 'crc', 'sed', 'fdiff', 'unix2dos', 'udeol', 'dos2unix', 'udc', 'ipenv', 
+               'clgrepo', 'sagflow', 'ghtml', 'gpwd', 'tpwd', 'gpwp', 'swpwp', 'pspar', 'pscur', 
+               'savs', 'sacode', 'srms', 'srapi', 'srweb', 'srbing', 'gwse'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable

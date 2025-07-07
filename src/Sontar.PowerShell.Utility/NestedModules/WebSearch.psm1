@@ -73,10 +73,18 @@ function Search-Web {
         $Terms
     )
 
-    $t = [Uri]::EscapeDataString(($Terms | Join-String -Separator ' '))
+    $t = $Terms ? [Uri]::EscapeDataString(($Terms | Join-String -Separator ' ')) : $null
 
     Get-WebSearch $Key | ForEach-Object {
-        $u = $_.Url -replace '\{terms\}',"$t"
+        if($t) {
+            $u = $_.Url -replace '\{terms\}',"$t"
+        }
+        else {
+            $s = [uri]::new($_.Url)
+            $p = $s.IsDefaultPort ? "" : ":$($s.Port)"
+            $u = "$($s.Scheme)://$($s.Host)$p"
+        }
+
         $IsWindows ? (Start-Process $u) : $u
     }
 }
