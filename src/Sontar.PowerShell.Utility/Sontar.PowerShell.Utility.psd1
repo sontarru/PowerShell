@@ -1,6 +1,6 @@
 @{
 RootModule = 'Sontar.PowerShell.Utility.psm1'
-ModuleVersion = '1.1.0'
+ModuleVersion = '1.0.0'
 GUID = 'b19e8c97-93b2-4dfd-9cd8-de4d77e225b7'
 Author = 'sontar.ru'
 CompanyName = 'sontar.ru'

@@ -1,5 +1,5 @@
 @{
-ModuleVersion = '1.1.0'
+ModuleVersion = '1.0.0'
 GUID = '466623f1-635e-4eba-a464-5cad5c9632d5'
 Author = 'sontar.ru'
 CompanyName = 'sontar.ru'
