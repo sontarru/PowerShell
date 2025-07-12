@@ -43,6 +43,10 @@
     "name": "CALD",
     "url": "https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q={terms}"
   },
+  "thesarius": {
+      "name": "CALD Thesarius",
+      "url": "https://dictionary.cambridge.org/search/direct/?datasetsearch=thesaurus&q={terms}"
+  },
   "lingen": {
     "name": "Lingvo EN -> RU",
     "url": "https://www.lingvolive.com/en-us/translate/en-ru/{terms}"
@@ -58,6 +62,10 @@
   "ozon": {
     "name": "Ozon",
     "url": "https://www.ozon.ru/search/?text={terms}"
+  },
+  "dns": {
+    "name": "DNS",
+    "url": "https://www.dns-shop.ru/search/?q={terms}"
   },
   "kns": {
     "name": "KNS",
