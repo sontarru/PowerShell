@@ -10,6 +10,7 @@ param (
         $prefix = "Sontar.PowerShell"
         Join-Path $PSScriptRoot 'src' |
             Get-ChildItem -Directory -Filter "$prefix.$($args[2])*" |
+            Where-Object Name -ne 'Sontar.PowerShell.Develop'
             ForEach-Object { $_.Name.Substring($prefix.Length + 1) }
 
     })]
@@ -63,7 +64,8 @@ begin {
 
 process {
     $Name | ForEach-Object {
-        Get-ChildItem $srcdir -Directory -Filter "Sontar.PowerShell.$_"
+        Get-ChildItem $srcdir -Directory -Filter "Sontar.PowerShell.$_" |
+        Where-Object Name -NE 'Sontar.PowerShell.Develop'
     } | ForEach-Object {
         $moddir[$_.Name] = $_
     }
