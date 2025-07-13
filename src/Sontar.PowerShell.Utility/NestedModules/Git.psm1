@@ -10,7 +10,7 @@ function Get-Git {
 .SYNOPSIS
 Cleans the current Git repository.
 #>
-function Clear-GitRepo {
+function Clear-GitIgnoredFiles {
     [CmdletBinding()]
     param (
         [switch]
@@ -53,5 +53,5 @@ function Start-GitFlow {
         & $git push -u origin $Name
 }
 
-Set-Alias clgrepo Clear-GitRepo
+Set-Alias clgit Clear-GitIgnoredFiles
 Set-Alias sagflow Start-GitFlow
