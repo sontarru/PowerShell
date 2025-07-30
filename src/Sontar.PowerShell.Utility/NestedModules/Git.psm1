@@ -53,5 +53,5 @@ function Start-GitFlow {
         & $git push -u origin $Name
 }
 
-Set-Alias clgit Clear-GitIgnoredFiles
-Set-Alias sagflow Start-GitFlow
+Set-Alias clgi Clear-GitIgnoredFiles
+Set-Alias sagf Start-GitFlow
