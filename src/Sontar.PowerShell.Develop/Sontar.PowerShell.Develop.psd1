@@ -1,10 +1,10 @@
 @{
 RootModule = 'Sontar.PowerShell.Develop.psm1'
-ModuleVersion = '2.0.0'
+ModuleVersion = '2.0.1'
 GUID = '24ff383f-1dff-4c5d-a3e4-e94313849875'
-Author = 'rnovo'
-CompanyName = 'rnovo'
-Copyright = '(c) rnovo, 2025'
+Author = 'sontar.ru'
+CompanyName = 'sontar.ru'
+Copyright = '(c) sontar.ru, 2025'
 Description = 'Development tools for this repo.'
 NestedModules = @()
 FunctionsToExport = 'Update-Manifest', 'Optimize-Manifest'
