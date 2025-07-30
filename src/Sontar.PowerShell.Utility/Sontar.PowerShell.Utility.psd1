@@ -15,26 +15,26 @@ NestedModules = @('NestedModules\CodeCoverage.psm1',
                'NestedModules\Password.psm1', 
                'NestedModules\PowerPlan.psm1', 
                'NestedModules\Process.psm1', 
+               'NestedModules\Software.psm1', 
                'NestedModules\SystemTray.psm1', 
                'NestedModules\VisualStudio.psm1', 
                'NestedModules\VSCode.psm1', 
                'NestedModules\WebSearch.psm1')
 FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'Get-ReportGenerator', 
-               'New-CodeCoverageReport', 'Compare-Content', 
-               'Update-ContentEolToUnix', 'Update-ContentEol', 
-               'Update-ContentEolToDos', 'Update-Content', 'Import-Env', 
-               'Clear-GitIgnoredFiles', 'Start-GitFlow', 'Get-Git', 
-               'Get-RandomHostName', 'Import-HtmlAgilityPack', 'Get-Html', 
-               'Get-RandomPassword', 'Test-PasswordStrength', 'Switch-PowerPlan', 
-               'Get-PowerPlan', 'Get-ParentProcess', 'Get-CurrentProcess', 
-               'Reset-SystemTray', 'Get-VisualStudio', 'Start-VisualStudio', 
-               'Start-VSCode', 'Get-VSCode', 'Get-WebSearch', 'Search-Api', 'Search-Web', 
-               'Search-MS', 'Search-Bing'
+               'New-CodeCoverageReport', 'Update-ContentEolToDos', 'Compare-Content', 
+               'Update-ContentEol', 'Update-ContentEolToUnix', 'Update-Content', 
+               'Import-Env', 'Start-GitFlow', 'Clear-GitIgnoredFiles', 'Get-Git', 
+               'Get-RandomHostName', 'Get-Html', 'Import-HtmlAgilityPack', 
+               'Test-PasswordStrength', 'Get-RandomPassword', 'Switch-PowerPlan', 
+               'Get-PowerPlan', 'Get-CurrentProcess', 'Get-ParentProcess', 'Get-Gsudo', 
+               'Get-Winget', 'Update-Software', 'Reset-SystemTray', 'Get-VisualStudio', 
+               'Start-VisualStudio', 'Get-VSCode', 'Start-VSCode', 'Search-Api', 
+               'Search-Bing', 'Get-WebSearch', 'Search-Web', 'Search-MS'
 CmdletsToExport = @()
 VariablesToExport = '*'
-AliasesToExport = 'nccr', 'dos2unix', 'unix2dos', 'crc', 'udc', 'udeol', 'fdiff', 'sed', 'ipenv', 
-               'clgit', 'sagflow', 'ghtml', 'gpwd', 'tpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 
-               'savs', 'sacode', 'gwse', 'srweb', 'srbing', 'srapi', 'srms'
+AliasesToExport = 'nccr', 'crc', 'fdiff', 'udc', 'udeol', 'sed', 'dos2unix', 'unix2dos', 'ipenv', 
+               'clgi', 'sagf', 'ghtml', 'gpwd', 'tpwd', 'gpwp', 'swpwp', 'pscur', 'pspar', 'savs', 
+               'sacode', 'gwse', 'srms', 'srbing', 'srweb', 'srapi'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
