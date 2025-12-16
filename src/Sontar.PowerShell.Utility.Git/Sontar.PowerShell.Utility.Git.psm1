@@ -1,11 +1,5 @@
 $ErrorActionPreference = 'Stop'
 
-function Get-Git {
-    $git = $IsWindows ? "$env:ProgramFiles\Git\bin\git.exe" : (which git)
-    Assert-Command $git
-    return $git
-}
-
 <#
 .SYNOPSIS
 Cleans the current Git repository.
@@ -18,9 +12,8 @@ function Clear-GitIgnoredFiles {
         $Untracked
     )
 
-    $git = Get-Git
     $x = $Untracked ? "-x" : "-X"
-    & $git clean -df $x -e '!.vs' -e '!*.suo' -e '!.vscode/*'
+    git clean -df $x -e '!.vs' -e '!*.suo' -e '!.vscode/*'
 }
 
 <#
@@ -45,13 +38,12 @@ function Start-GitFlow {
         $Base = (git branch --show-current)
     }
 
-    $git = Get-Git
-
-    & $git checkout $Base -b $Name &&
-        & $git fetch origin "${Base}:${Base}" &&
-        & $git rebase $Base &&
-        & $git push -u origin $Name
+    git checkout $Base -b $Name &&
+        git fetch origin "${Base}:${Base}" &&
+        git rebase $Base &&
+        git push -u origin $Name
 }
 
 Set-Alias clgi Clear-GitIgnoredFiles
 Set-Alias sagf Start-GitFlow
+
