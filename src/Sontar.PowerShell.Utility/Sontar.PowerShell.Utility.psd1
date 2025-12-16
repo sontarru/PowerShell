@@ -9,7 +9,6 @@ Description = 'The Utility module.'
 NestedModules = @('NestedModules\CodeCoverage.psm1', 
                'NestedModules\Content.psm1', 
                'NestedModules\Env.psm1', 
-               'NestedModules\Git.psm1', 
                'NestedModules\HostName.psm1', 
                'NestedModules\Html.psm1', 
                'NestedModules\Password.psm1', 
@@ -20,21 +19,21 @@ NestedModules = @('NestedModules\CodeCoverage.psm1',
                'NestedModules\VisualStudio.psm1', 
                'NestedModules\VSCode.psm1', 
                'NestedModules\WebSearch.psm1')
-FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'Get-ReportGenerator', 
-               'New-CodeCoverageReport', 'Update-ContentEolToDos', 'Compare-Content', 
+FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'New-CodeCoverageReport', 
+               'Get-ReportGenerator', 'Compare-Content', 'Update-ContentEolToDos', 
                'Update-ContentEol', 'Update-ContentEolToUnix', 'Update-Content', 
-               'Import-Env', 'Start-GitFlow', 'Clear-GitIgnoredFiles', 'Get-Git', 
-               'Get-RandomHostName', 'Get-Html', 'Import-HtmlAgilityPack', 
-               'Test-PasswordStrength', 'Get-RandomPassword', 'Switch-PowerPlan', 
-               'Get-PowerPlan', 'Get-CurrentProcess', 'Get-ParentProcess', 'Get-Gsudo', 
-               'Get-Winget', 'Update-Software', 'Reset-SystemTray', 'Get-VisualStudio', 
-               'Start-VisualStudio', 'Get-VSCode', 'Start-VSCode', 'Search-Api', 
-               'Search-Bing', 'Get-WebSearch', 'Search-Web', 'Search-MS'
+               'Import-Env', 'Get-RandomHostName', 'Import-HtmlAgilityPack', 
+               'Get-Html', 'Test-PasswordStrength', 'Get-RandomPassword', 
+               'Get-PowerPlan', 'Switch-PowerPlan', 'Get-CurrentProcess', 
+               'Get-ParentProcess', 'Get-Gsudo', 'Get-Winget', 'Update-Software', 
+               'Reset-SystemTray', 'Start-VisualStudio', 'Get-VisualStudio', 
+               'Get-VSCode', 'Start-VSCode', 'Search-Api', 'Search-Bing', 
+               'Get-WebSearch', 'Search-MS', 'Search-Web'
 CmdletsToExport = @()
 VariablesToExport = '*'
-AliasesToExport = 'nccr', 'crc', 'fdiff', 'udc', 'udeol', 'sed', 'dos2unix', 'unix2dos', 'ipenv', 
-               'clgi', 'sagf', 'ghtml', 'gpwd', 'tpwd', 'gpwp', 'swpwp', 'pscur', 'pspar', 'savs', 
-               'sacode', 'gwse', 'srms', 'srbing', 'srweb', 'srapi'
+AliasesToExport = 'nccr', 'udc', 'unix2dos', 'sed', 'udeol', 'dos2unix', 'fdiff', 'crc', 'ipenv', 
+               'ghtml', 'tpwd', 'gpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 'savs', 'sacode', 
+               'srweb', 'srapi', 'srbing', 'gwse', 'srms'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
