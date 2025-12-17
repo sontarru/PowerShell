@@ -1,11 +1,5 @@
 $ErrorActionPreference = "Stop"
 
-function Get-VSCode {
-    $code = $IsWindows ? "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd" : (which code)
-    Assert-Command $code
-    return $code
-}
-
 function Start-VSCode {
     [CmdletBinding()]
     param (
@@ -15,7 +9,6 @@ function Start-VSCode {
     )
 
     begin {
-        $code = Get-VSCode
         $paths = @{}
     }
 
@@ -26,7 +19,7 @@ function Start-VSCode {
 
     end {
         $paths.Keys | ForEach-Object {
-            & $code -n $_
+            code -n $_
         }
     }
 }

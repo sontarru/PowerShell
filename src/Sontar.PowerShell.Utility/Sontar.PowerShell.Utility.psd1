@@ -16,22 +16,21 @@ NestedModules = @('NestedModules\CodeCoverage.psm1',
                'NestedModules\Process.psm1', 
                'NestedModules\Software.psm1', 
                'NestedModules\SystemTray.psm1', 
-               'NestedModules\VSCode.psm1', 
                'NestedModules\WebSearch.psm1')
-FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'New-CodeCoverageReport', 
-               'Get-ReportGenerator', 'Compare-Content', 'Update-ContentEolToDos', 
-               'Update-ContentEol', 'Update-ContentEolToUnix', 'Update-Content', 
-               'Import-Env', 'Get-RandomHostName', 'Import-HtmlAgilityPack', 
-               'Get-Html', 'Test-PasswordStrength', 'Get-RandomPassword', 
-               'Get-PowerPlan', 'Switch-PowerPlan', 'Get-CurrentProcess', 
-               'Get-ParentProcess', 'Get-Gsudo', 'Get-Winget', 'Update-Software', 
-               'Reset-SystemTray', 'Get-VSCode', 'Start-VSCode', 'Search-Api', 
-               'Search-Bing', 'Get-WebSearch', 'Search-MS', 'Search-Web'
+FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'Get-ReportGenerator', 
+               'New-CodeCoverageReport', 'Update-ContentEolToUnix', 
+               'Update-ContentEolToDos', 'Update-Content', 'Compare-Content', 
+               'Update-ContentEol', 'Import-Env', 'Get-RandomHostName', 'Get-Html', 
+               'Import-HtmlAgilityPack', 'Get-RandomPassword', 
+               'Test-PasswordStrength', 'Get-PowerPlan', 'Switch-PowerPlan', 
+               'Get-ParentProcess', 'Get-CurrentProcess', 'Get-Gsudo', 
+               'Update-Software', 'Get-Winget', 'Reset-SystemTray', 'Search-Api', 
+               'Get-WebSearch', 'Search-Bing', 'Search-Web', 'Search-MS'
 CmdletsToExport = @()
 VariablesToExport = '*'
-AliasesToExport = 'nccr', 'udc', 'unix2dos', 'sed', 'udeol', 'dos2unix', 'fdiff', 'crc', 'ipenv', 
-               'ghtml', 'tpwd', 'gpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 'sacode', 'srweb', 
-               'srapi', 'srbing', 'gwse', 'srms'
+AliasesToExport = 'nccr', 'dos2unix', 'sed', 'crc', 'udeol', 'fdiff', 'udc', 'unix2dos', 'ipenv', 
+               'ghtml', 'gpwd', 'tpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 'srapi', 'gwse', 
+               'srweb', 'srbing', 'srms'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
