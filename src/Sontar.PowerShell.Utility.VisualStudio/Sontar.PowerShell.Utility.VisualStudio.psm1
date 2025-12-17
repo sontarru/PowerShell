@@ -1,12 +1,5 @@
 $ErrorActionPreference = "Stop"
 
-function Get-VisualStudio {
-    Assert-Windows
-    $vs = "$env:ProgramFiles\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe"
-    Assert-Command $vs
-    return $vs
-}
-
 function Start-VisualStudio {
     [CmdletBinding()]
     param (
@@ -19,7 +12,6 @@ function Start-VisualStudio {
     )
 
     begin {
-        $vs = Get-VisualStudio
         $paths = @{}
     }
 
@@ -40,7 +32,7 @@ function Start-VisualStudio {
 
     end {
         $paths.Keys | ForEach-Object {
-            & $vs $_
+            vs $_
         }
     }
 }

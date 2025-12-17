@@ -16,7 +16,6 @@ NestedModules = @('NestedModules\CodeCoverage.psm1',
                'NestedModules\Process.psm1', 
                'NestedModules\Software.psm1', 
                'NestedModules\SystemTray.psm1', 
-               'NestedModules\VisualStudio.psm1', 
                'NestedModules\VSCode.psm1', 
                'NestedModules\WebSearch.psm1')
 FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'New-CodeCoverageReport', 
@@ -26,14 +25,13 @@ FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'New-CodeCoverageReport'
                'Get-Html', 'Test-PasswordStrength', 'Get-RandomPassword', 
                'Get-PowerPlan', 'Switch-PowerPlan', 'Get-CurrentProcess', 
                'Get-ParentProcess', 'Get-Gsudo', 'Get-Winget', 'Update-Software', 
-               'Reset-SystemTray', 'Start-VisualStudio', 'Get-VisualStudio', 
-               'Get-VSCode', 'Start-VSCode', 'Search-Api', 'Search-Bing', 
-               'Get-WebSearch', 'Search-MS', 'Search-Web'
+               'Reset-SystemTray', 'Get-VSCode', 'Start-VSCode', 'Search-Api', 
+               'Search-Bing', 'Get-WebSearch', 'Search-MS', 'Search-Web'
 CmdletsToExport = @()
 VariablesToExport = '*'
 AliasesToExport = 'nccr', 'udc', 'unix2dos', 'sed', 'udeol', 'dos2unix', 'fdiff', 'crc', 'ipenv', 
-               'ghtml', 'tpwd', 'gpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 'savs', 'sacode', 
-               'srweb', 'srapi', 'srbing', 'gwse', 'srms'
+               'ghtml', 'tpwd', 'gpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 'sacode', 'srweb', 
+               'srapi', 'srbing', 'gwse', 'srms'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
