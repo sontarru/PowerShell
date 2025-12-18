@@ -1,8 +1,39 @@
 $ErrorActionPreference = "Stop"
 
-$WebSearchJsonPath = Join-Path $PSScriptRoot 'WebSearch.json'
+function  _GetWsePath {
+    Join-Path $PSScriptRoot 'wse.json'
+}
 
-function Get-WebSearch {
+function Import-WebSearchEngine {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0)]
+        [string]
+        $Path
+    )
+
+    Copy-Item $Path (_GetWsePath) -Force
+}
+
+function Export-WebSearchEngine {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0)]
+        [string]
+        $Path
+    )
+
+    $wse = _GetWsePath
+
+    if(Test-Path $wse) {
+        Copy-Item $wse $Path -Force
+    }
+    else {
+        Set-Content $Path "{}"
+    }
+}
+
+function Get-WebSearchEngine {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -18,17 +49,19 @@ function Get-WebSearch {
     )
 
     begin {
+        $wse = _GetWsePath
         $all = @()
 
-        $ht = Get-Content $WebSearchJsonPath |
-            ConvertFrom-Json -AsHashtable
+        if(Test-Path "$PSScriptRoot/wse.json") {
+            $ht = Get-Content $wse | ConvertFrom-Json -AsHashtable
 
-        foreach($k in $ht.Keys) {
-            $v = $ht[$k]
-            $all += [PSCustomObject]@{
-                Key = $k
-                Name = $v.name
-                Url = $v.url
+            foreach($k in $ht.Keys) {
+                $v = $ht[$k]
+                $all += [PSCustomObject]@{
+                    Key = $k
+                    Name = $v.name
+                    Url = $v.url
+                }
             }
         }
 
@@ -63,7 +96,7 @@ function Search-Web {
     param (
         [Parameter(Mandatory, Position = 0)]
         [ArgumentCompleter({
-            Get-WebSearch "$($args[2])*" | Select-Object -ExpandProperty Key
+            Get-WebSearchEngine "$($args[2])*" | Select-Object -ExpandProperty Key
         })]
         [string[]]
         $Key,
@@ -75,7 +108,7 @@ function Search-Web {
 
     $t = $Terms ? [Uri]::EscapeDataString(($Terms | Join-String -Separator ' ')) : $null
 
-    Get-WebSearch $Key | ForEach-Object {
+    Get-WebSearchEngine $Key | ForEach-Object {
         if($t) {
             $u = $_.Url -replace '\{terms\}',"$t"
         }
@@ -122,7 +155,9 @@ function Search-Api {
     Search-Web 'api' $Terms
 }
 
-Set-Alias gwse Get-WebSearch
+Set-Alias ipwse Import-WebSearchEngine
+Set-Alias epwse Export-WebSearchEngine
+Set-Alias gwse Get-WebSearchEngine
 Set-Alias srweb Search-Web
 Set-Alias srbing Search-Bing
 Set-Alias srms Search-MS
