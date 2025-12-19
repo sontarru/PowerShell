@@ -15,22 +15,19 @@ NestedModules = @('NestedModules\CodeCoverage.psm1',
                'NestedModules\PowerPlan.psm1', 
                'NestedModules\Process.psm1', 
                'NestedModules\Software.psm1', 
-               'NestedModules\SystemTray.psm1', 
-               'NestedModules\WebSearch.psm1')
-FunctionsToExport = 'Assert-Windows', 'Assert-Command', 'Get-ReportGenerator', 
-               'New-CodeCoverageReport', 'Update-ContentEolToUnix', 
-               'Update-ContentEolToDos', 'Update-Content', 'Compare-Content', 
-               'Update-ContentEol', 'Import-Env', 'Get-RandomHostName', 'Get-Html', 
-               'Import-HtmlAgilityPack', 'Get-RandomPassword', 
-               'Test-PasswordStrength', 'Get-PowerPlan', 'Switch-PowerPlan', 
-               'Get-ParentProcess', 'Get-CurrentProcess', 'Get-Gsudo', 
-               'Update-Software', 'Get-Winget', 'Reset-SystemTray', 'Search-Api', 
-               'Get-WebSearch', 'Search-Bing', 'Search-Web', 'Search-MS'
+               'NestedModules\SystemTray.psm1')
+FunctionsToExport = 'Assert-Command', 'Assert-Windows', 'New-CodeCoverageReport', 
+               'Get-ReportGenerator', 'Compare-Content', 'Update-ContentEol', 
+               'Update-Content', 'Update-ContentEolToUnix', 'Update-ContentEolToDos', 
+               'Import-Env', 'Get-RandomHostName', 'Get-Html', 
+               'Import-HtmlAgilityPack', 'Test-PasswordStrength', 
+               'Get-RandomPassword', 'Switch-PowerPlan', 'Get-PowerPlan', 
+               'Get-ParentProcess', 'Get-CurrentProcess', 'Update-Software', 
+               'Get-Gsudo', 'Get-Winget', 'Reset-SystemTray'
 CmdletsToExport = @()
 VariablesToExport = '*'
-AliasesToExport = 'nccr', 'dos2unix', 'sed', 'crc', 'udeol', 'fdiff', 'udc', 'unix2dos', 'ipenv', 
-               'ghtml', 'gpwd', 'tpwd', 'swpwp', 'gpwp', 'pspar', 'pscur', 'srapi', 'gwse', 
-               'srweb', 'srbing', 'srms'
+AliasesToExport = 'nccr', 'crc', 'dos2unix', 'udc', 'fdiff', 'udeol', 'sed', 'unix2dos', 'ipenv', 
+               'ghtml', 'tpwd', 'gpwd', 'swpwp', 'gpwp', 'pspar', 'pscur'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
