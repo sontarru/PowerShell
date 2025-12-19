@@ -30,7 +30,7 @@ function Start-GitFlow {
 
         [Parameter()]
         [string]
-        # The base branch for the flow.
+        # The base branch for the flow. Default is the current one.
         $Base
     )
 

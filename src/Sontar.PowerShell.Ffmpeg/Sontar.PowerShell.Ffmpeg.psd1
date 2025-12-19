@@ -1,15 +1,15 @@
 @{
-RootModule = 'Sontar.PowerShell.Utility.Git.psm1'
+RootModule = 'Sontar.PowerShell.Ffmpeg.psm1'
 ModuleVersion = '0.0.1'
-GUID = '74560fbd-3617-4f54-9d0a-f207ad00332a'
+GUID = 'ef5763e3-c395-4ea4-a355-54c38a106bbe'
 Author = 'rnovo'
 CompanyName = 'rnovo'
 Copyright = '(c) rnovo, 2025'
-Description = 'Git tools.'
+Description = 'Ffmpeg tools.'
 NestedModules = @()
-FunctionsToExport = 'Clear-GitIgnoredFiles', 'Start-GitFlow'
+FunctionsToExport = 'ConvertTo-Jellyfin'
 CmdletsToExport = @()
-AliasesToExport = 'sagf', 'clgi'
+AliasesToExport = @()
 VariablesToExport = @()
 PrivateData = @{
     PSData = @{

@@ -1,15 +1,16 @@
 @{
-RootModule = 'Sontar.PowerShell.Utility.VSCode.psm1'
+RootModule = 'Sontar.PowerShell.VisualStudio.psm1'
 ModuleVersion = '0.0.1'
-GUID = '32051c29-5524-4d9f-b24a-54077242c24d'
+GUID = '01170641-c081-420d-9a3a-d6ab09c52054'
 Author = 'rnovo'
 CompanyName = 'rnovo'
 Copyright = '(c) rnovo, 2025'
-Description = 'VSCode tools.'
+Description = 'VisualStudio tools.'
 NestedModules = @()
-FunctionsToExport = 'Start-VSCode'
+FunctionsToExport = 'Start-VisualStudio'
 CmdletsToExport = @()
-AliasesToExport = 'sacode'
+AliasesToExport = 'savs'
+VariablesToExport = @()
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
