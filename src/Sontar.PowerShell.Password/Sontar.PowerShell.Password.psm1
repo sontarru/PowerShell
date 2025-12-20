@@ -13,7 +13,7 @@ Enum CharKind {
 $CharKindChars = @{
     [CharKind]::UpperCase = 'A'..'Z'
     [CharKind]::LowerCase = 'a'..'z'
-    [CharKind]::Digit = [char[]](48..58)
+    [CharKind]::Digit = [char[]](48..57)
     [CharKind]::Symbol = [char[]](33..47 + 58..64 + 91..96 + 123..126)
 }
 
