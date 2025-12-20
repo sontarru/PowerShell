@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 .SYNOPSIS
 Removes comments and emty lines from the manifest file.
 #>
-function Optimize-SontarModule {
+function Optimize-SontarModuleManifest {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -43,7 +43,7 @@ function Optimize-SontarModule {
 2. Adds all NestedModules.
 3. Scans all modules for functions and aliases and sets coresponding Exports.
 #>
-function Update-SontarModule {
+function Update-SontarModuleManifest {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -132,7 +132,7 @@ function Update-SontarModule {
             Update-PSModuleManifest @umm
 
             if($Optimize) {
-                Optimize-Manifest $psd
+                Optimize-SontarModuleManifest $psd
             }
         }
     }
