@@ -144,7 +144,6 @@ function Update-ContentEolToDos {
     }
 }
 
-Set-Alias crc Compare-Content
 Set-Alias fdiff Compare-Content
 Set-Alias udc Update-Content
 Set-Alias sed Update-Content
