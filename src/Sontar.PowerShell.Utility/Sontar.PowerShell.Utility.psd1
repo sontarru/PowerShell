@@ -7,9 +7,7 @@ CompanyName = 'sontar.ru'
 Copyright = '(c) sontar.ru, 2025'
 Description = 'The Utility module.'
 NestedModules = @('NestedModules\CodeCoverage.psm1',
-               'NestedModules\Content.psm1',
                'NestedModules\Env.psm1',
-               'NestedModules\HostName.psm1',
                'NestedModules\Html.psm1',
                'NestedModules\PowerPlan.psm1',
                'NestedModules\Process.psm1',
