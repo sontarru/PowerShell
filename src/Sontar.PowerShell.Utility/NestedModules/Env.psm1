@@ -8,16 +8,10 @@ $EnvRegKey = @{
 function Import-Env {
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $Path
     )
-
-    Assert-Windows
-
-    if(-not $Path) {
-        $Path = Join-Path $PSScriptRoot 'Env.json'
-    }
 
     Get-Content $Path | ConvertFrom-Json -AsHashtable |
         ForEach-Object { $_.GetEnumerator() } |
@@ -41,4 +35,4 @@ function Import-Env {
         }
 }
 
-Set-Alias ipenv Import-Env
+Set-Alias ipenv Import-Environment
