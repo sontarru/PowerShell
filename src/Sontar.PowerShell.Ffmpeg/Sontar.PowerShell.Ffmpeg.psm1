@@ -7,7 +7,7 @@ function ConvertTo-Jellyfin {
         [string]
         $Path,
 
-        [Parameter()]
+        [Parameter(Position = 1)]
         [string]
         $OutFile
     )
