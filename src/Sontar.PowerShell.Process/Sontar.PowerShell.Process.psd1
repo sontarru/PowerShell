@@ -10,7 +10,7 @@ NestedModules = @()
 FunctionsToExport = 'Get-ParentProcess', 'Get-CurrentProcess'
 CmdletsToExport = @()
 VariablesToExport = @()
-AliasesToExport = 'pspar', 'pscur'
+AliasesToExport = @()
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
