@@ -1,5 +1,9 @@
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Creates Jellyfin-optimized media file.
+#>
 function ConvertTo-Jellyfin {
     [CmdletBinding()]
     param (
@@ -13,6 +17,8 @@ function ConvertTo-Jellyfin {
 
         [Parameter()]
         [int[]]
+        # List of stream indicies to include in the output.
+        # Default is all.
         $Stream
     )
 
