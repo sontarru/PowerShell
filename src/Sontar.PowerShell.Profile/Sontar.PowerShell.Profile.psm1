@@ -93,7 +93,8 @@ function Prompt {
 Set-PSReadLineOption -EditMode vi -ViModeIndicator Script `
     -ViModeChangeHandler {
         $c = Get-CursorEscapeSequence
-        Write-Host -NoNewLine ($args[0] -eq 'Command') ? $c.BlinkingBlock : $c.BlinkingBar
+        $e = ($args[0] -eq 'Command') ? $c.BlinkingBlock : $c.BlinkingBar
+        Write-Host -NoNewLine $e
     }
 
 <#
