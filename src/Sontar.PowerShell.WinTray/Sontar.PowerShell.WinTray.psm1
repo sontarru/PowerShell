@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-function Reset-SystemTray {
+function Reset-WinTray {
     Assert-Windows
 
     Stop-Process -Name 'explorer' -Force -ErrorAction Stop
