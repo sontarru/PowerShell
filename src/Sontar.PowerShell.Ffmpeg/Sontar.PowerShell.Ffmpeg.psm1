@@ -9,7 +9,11 @@ function ConvertTo-Jellyfin {
 
         [Parameter(Position = 1)]
         [string]
-        $OutFile
+        $OutFile,
+
+        [Parameter()]
+        [int[]]
+        $Stream
     )
 
     if(-not $OutFile) {
@@ -23,12 +27,19 @@ function ConvertTo-Jellyfin {
     }
 
     if(Test-Path $dir -PathType Container) {
+        if($Stream) {
+            $s = $Stream | ForEach-Object { "-map", "0:$_" }
+        }
+        else {
+            $s = '-map', '0:v', '-map', '0:a'
+        }
+
         ffmpeg -i $Path `
             -c:v libx264 -preset veryfast -crf 23 `
             -profile:v high -level 4.1 -pix_fmt yuv420p `
             -vf "scale=-2:720" `
             -c:a aac -b:a 192k -ac 2 -ar 48000 `
-            -map 0:v -map 0:a `
+            $s `
             $OutFile
     }
 }
