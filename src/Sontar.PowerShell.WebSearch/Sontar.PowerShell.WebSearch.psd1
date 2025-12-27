@@ -7,10 +7,11 @@ CompanyName = 'rnovo'
 Copyright = '(c) rnovo, 2025'
 Description = 'Web search from command prompt.'
 NestedModules = @()
-FunctionsToExport = 'Export-WebSearchEngine', 'Search-Web', 'Search-Bing', 'Search-MS',
-               'Search-Api', 'Get-WebSearchEngine', 'Import-WebSearchEngine'
-CmdletsToExport = @()
-AliasesToExport = 'gwse', 'srms', 'ipwse', 'srapi', 'srweb', 'epwse', 'srbing'
+FunctionsToExport = 'Search-MS', 'Search-Bing', 'Update-WebSearchEngine',
+               'New-WebSearchEngines', 'Search-Api', 'ConvertTo-VimiumSearch',
+               'Export-WebSearchEngine', 'Get-WebSearchEngine',
+               'Remove-WebSearchEngime', 'Import-WebSearchEngine', 'Search-Web'
+AliasesToExport = 'ipwse', 'srms', 'rwse', 'gwse', 'epwse', 'nwse', 'srb', 'udwse', 'srapi', 'srweb'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable
