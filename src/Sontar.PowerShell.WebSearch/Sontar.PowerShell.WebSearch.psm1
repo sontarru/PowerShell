@@ -94,9 +94,9 @@ function New-WebSearchEngines {
     )
 
     $Name = $Name ? $Name : $Key
-    $all = Get-WebSearchEngine
+    $all = @() + (Get-WebSearchEngine)
     $existing = $all | Where-Object Key -eq $Key
-    $save = { $all | ConvertTo-Json | Out-File $Wse }
+    $save = { $all | ConvertTo-Json -AsArray | Out-File $Wse }
 
     if(-not $existing) {
         $new = [PSCustomObject]@{
@@ -156,7 +156,7 @@ function Update-WebSearchEngine {
             $engine.Url = $Url
         }
 
-        $engine | ConvertTo-Json |
+        $all | ConvertTo-Json |
             Out-File $Wse
 
         if($PassThrough) {
@@ -259,11 +259,12 @@ function Import-WebSearchEngine {
     $ht.Keys | ForEach-Object {
         $k = $_
         if($k) {
-            $n = $ht[$k]["name"] ?? $k
-            $u = $ht[$k]["url"]
+            $n = $ht[$k]["Name"] ?? $k
+            $u = $ht[$k]["Url"]
             if($u) {
-                if(-not (Update-WebSearchEngine $k -Name $n -Url $u -PassThrough)) {
-                    New-WebSearchEngines $k -Name $n -Url $u
+                if(-not (Update-WebSearchEngine $k -Name $n -Url $u -PassThrough `
+                            -ErrorAction SilentlyContinue)) {
+                    $null = New-WebSearchEngines $k -Name $n -Url $u
                 }
 
                 if($PassThrough) {
