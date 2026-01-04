@@ -7,10 +7,10 @@ CompanyName = 'Sontar'
 Copyright = '(c) Sontar, 2025'
 Description = 'GitHub tools.'
 NestedModules = @()
-FunctionsToExport = 'Get-GitHubPackages'
+FunctionsToExport = 'Get-GitHubPackage'
 CmdletsToExport = @()
 VariablesToExport = @()
-AliasesToExport = @()
+AliasesToExport = 'gghp'
 PrivateData = @{
     PSData = @{
     } # End of PSData hashtable

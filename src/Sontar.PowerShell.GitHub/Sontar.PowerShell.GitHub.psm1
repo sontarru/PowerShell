@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 <#
 Gets a list of packages from the user account.
 #>
-function Get-GitHubPackages {
+function Get-GitHubPackage {
     [CmdletBinding()]
     param (
         # Package name.
@@ -50,3 +50,5 @@ function Get-GitHubPackages {
             Sort-Object PackageType, Name
     }
 }
+
+Set-Alias gghp Get-GitHubPackage
