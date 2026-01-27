@@ -1,10 +1,10 @@
 @{
-RootModule = 'Sontar.PowerShell.Git.psm1'
-ModuleVersion = '0.0.1'
+RootModule = 'PowerShell.Git.psm1'
+ModuleVersion = '1.0.0'
 GUID = '74560fbd-3617-4f54-9d0a-f207ad00332a'
-Author = 'rnovo'
-CompanyName = 'rnovo'
-Copyright = '(c) rnovo, 2025'
+Author = 'Mosja.Dev'
+CompanyName = 'Mosja.Dev'
+Copyright = '(c) Mosja.Dev, 2025'
 Description = 'Git tools.'
 NestedModules = @()
 FunctionsToExport = 'Clear-GitIgnoredFiles', 'Start-GitFlow'

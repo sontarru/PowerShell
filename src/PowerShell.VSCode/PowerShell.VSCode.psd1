@@ -1,10 +1,10 @@
 @{
-RootModule = 'Sontar.PowerShell.VSCode.psm1'
-ModuleVersion = '0.0.1'
+RootModule = 'PowerShell.VSCode.psm1'
+ModuleVersion = '1.0.0'
 GUID = '32051c29-5524-4d9f-b24a-54077242c24d'
-Author = 'rnovo'
-CompanyName = 'rnovo'
-Copyright = '(c) rnovo, 2025'
+Author = 'Mosja.Dev'
+CompanyName = 'Mosja.Dev'
+Copyright = '(c) Mosja.Dev, 2025'
 Description = 'VSCode tools.'
 NestedModules = @()
 FunctionsToExport = 'Start-VSCode'

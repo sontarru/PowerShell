@@ -1,10 +1,10 @@
 @{
-RootModule = 'Sontar.PowerShell.PowerPlan.psm1'
-ModuleVersion = '0.0.1'
+RootModule = 'PowerShell.PowerPlan.psm1'
+ModuleVersion = '1.0.0'
 GUID = '27e5e6bb-d875-4c3b-8f4c-de4e04d7fbeb'
-Author = 'Sontar'
-CompanyName = 'Sontar'
-Copyright = '(c) Sontar, 2025'
+Author = 'Mosja.Dev'
+CompanyName = 'Mosja.Dev'
+Copyright = '(c) Mosja.Dev, 2025'
 Description = 'Windows power plan switcher.'
 NestedModules = @()
 FunctionsToExport = 'Get-PowerPlan', 'Switch-PowerPlan'

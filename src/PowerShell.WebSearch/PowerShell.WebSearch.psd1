@@ -1,10 +1,10 @@
 @{
-RootModule = 'Sontar.PowerShell.WebSearch.psm1'
-ModuleVersion = '0.0.1'
+RootModule = 'PowerShell.WebSearch.psm1'
+ModuleVersion = '1.0.0'
 GUID = '2cce7017-a3e5-490f-a87b-0b912b4a38a9'
-Author = 'rnovo'
-CompanyName = 'rnovo'
-Copyright = '(c) rnovo, 2025'
+Author = 'Mosja.Dev'
+CompanyName = 'Mosja.Dev'
+Copyright = '(c) Mosja.Dev, 2025'
 Description = 'Web search from command prompt.'
 NestedModules = @()
 FunctionsToExport = 'Search-MS', 'Search-Bing', 'Update-WebSearchEngine',
